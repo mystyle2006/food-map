@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import FeedListScreen from '@app/screens/feed/FeedScreen.tsx';
+import FeedListScreen from '@app/screens/feed/FeedListScreen.tsx';
 import FeedDetailScreen from '@app/screens/feed/FeedDetailScreen';
 import FeedFavoriteScreen from '@app/screens/feed/FeedFavoriteScreen.tsx';
 import EditLocationScreen from '@app/screens/feed/EditLocationScreen.tsx';

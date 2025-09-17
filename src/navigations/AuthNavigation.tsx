@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import AuthHomeScreen from '@app/screens/auth/AuthHomeScreen';
+import { AuthHomeScreen } from '@app/screens/auth/AuthHomeScreen';
 import LoginScreen from '@app/screens/auth/LoginScreen';
 import SignupScreen from '@app/screens/auth/SignupScreen';
 import { createStaticNavigation } from '@react-navigation/native';

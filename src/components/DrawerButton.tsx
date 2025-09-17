@@ -1,9 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { MainDrawerParamList } from '@app/types/navigation.ts';
+
+type NavigationType = DrawerNavigationProp<MainDrawerParamList>;
 
 function DrawerButton() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationType>();
 
   return (
     <Pressable onPress={() => navigation.openDrawer()}>

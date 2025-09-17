@@ -6,34 +6,40 @@ import { FeedStack } from '@app/navigations/FeedNavigation.tsx';
 import { colors } from '@app/constants/colors.ts';
 import DrawerButton from '@app/components/DrawerButton.tsx';
 import CustomDrawerContent from '@app/components/CustomDrawerContent.tsx';
+import { DrawerIcons } from '@app/components/DrawerIcon.tsx';
+import { MainDrawerParamList } from '@app/types/navigation.ts';
 
 const DrawerNavigator = createDrawerNavigator({
-  screenOptions: {
-    drawerStyle: {
-      width: '60%',
-      backgroundColor: colors.WHITE,
-    },
-    drawerLabelStyle: {
-      fontWeight: '600',
-    },
-    drawerItemStyle: {
-      borderRadius: 5,
-    },
-    drawerType: 'front',
-    drawerActiveTintColor: colors.WHITE,
-    drawerInactiveTintColor: colors.GRAY_500,
-    drawerActiveBackgroundColor: colors.PINK_700,
-    drawerInactiveBackgroundColor: colors.GRAY_100,
-    headerTitleAlign: 'center',
-    headerBackButtonDisplayMode: 'minimal',
-    headerTintColor: colors.BLACK,
-    headerStyle: {
-      backgroundColor: colors.WHITE,
-      shadowColor: colors.GRAY_500,
-    },
-    headerTitleStyle: {
-      fontSize: 16,
-    },
+  screenOptions: ({ route }) => {
+    return {
+      drawerStyle: {
+        width: '60%',
+        backgroundColor: colors.WHITE,
+      },
+      drawerLabelStyle: {
+        fontWeight: '600',
+      },
+      drawerItemStyle: {
+        borderRadius: 5,
+      },
+      drawerType: 'front',
+      drawerActiveTintColor: colors.WHITE,
+      drawerInactiveTintColor: colors.GRAY_500,
+      drawerActiveBackgroundColor: colors.PINK_700,
+      drawerInactiveBackgroundColor: colors.GRAY_100,
+      drawerIcon: ({ focused }) =>
+        DrawerIcons(route.name as keyof MainDrawerParamList, focused),
+      headerTitleAlign: 'center',
+      headerBackButtonDisplayMode: 'minimal',
+      headerTintColor: colors.BLACK,
+      headerStyle: {
+        backgroundColor: colors.WHITE,
+        shadowColor: colors.GRAY_500,
+      },
+      headerTitleStyle: {
+        fontSize: 16,
+      },
+    };
   },
   screens: {
     Map: {

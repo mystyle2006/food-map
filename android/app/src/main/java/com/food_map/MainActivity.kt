@@ -4,8 +4,17 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import android.os.Bundle;
 
 class MainActivity : ReactActivity() {
+  /**
+   * Writer: Inno
+   * Purpose: This change is required to avoid crashes related to View state being not persisted consistently across Activity restarts.
+   * Link: https://reactnavigation.org/docs/getting-started
+   */
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(null)
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

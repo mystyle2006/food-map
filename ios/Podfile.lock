@@ -1332,7 +1332,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-safe-area-context (5.6.1):
+  - react-native-safe-area-context (5.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1347,8 +1347,8 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.6.1)
-    - react-native-safe-area-context/fabric (= 5.6.1)
+    - react-native-safe-area-context/common (= 5.4.0)
+    - react-native-safe-area-context/fabric (= 5.4.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1358,7 +1358,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/common (5.6.1):
+  - react-native-safe-area-context/common (5.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1382,7 +1382,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/fabric (5.6.1):
+  - react-native-safe-area-context/fabric (5.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2268,7 +2268,7 @@ SPEC CHECKSUMS:
   React-logger: 694787b12186eeeadccdfdc6769890e9080c1f11
   React-Mapbuffer: a0ee08ac29b8a2c08692aa0d51cefa1c88860e17
   React-microtasksnativemodule: ef2292ca147fa8793305e4693586ad0caf3afad3
-  react-native-safe-area-context: 895c49ee2613865f90318789be89a8e286fe7b69
+  react-native-safe-area-context: 562163222d999b79a51577eda2ea8ad2c32b4d06
   react-native-vector-icons-fontawesome6: 1b667969bef2f430d1d7515163b980b856f58670
   react-native-vector-icons-ionicons: ad07e944a092a5cf71b8b569d8f5ce2bf674c415
   React-NativeModulesApple: da60186ad0aafff031a9bc86b048711d34acc813

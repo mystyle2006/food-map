@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 function CalendarScreen() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>CalendarScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

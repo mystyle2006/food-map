@@ -1,11 +1,11 @@
 import { SafeAreaView, Text } from 'react-native';
 
-function SignupScreen() {
+function FeedFavoriteScreen() {
   return (
     <SafeAreaView>
-      <Text>SignupScreen</Text>
+      <Text>FeedFavoriteScreen</Text>
     </SafeAreaView>
   );
 }
 
-export default SignupScreen;
+export default FeedFavoriteScreen;

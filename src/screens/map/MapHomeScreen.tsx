@@ -1,11 +1,9 @@
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 function MapHomeScreen() {
   return (
     <SafeAreaView>
-      <View>
-        <Text>MapHomeScreen</Text>
-      </View>
+      <Text>MapHomeScreen</Text>
     </SafeAreaView>
   );
 }

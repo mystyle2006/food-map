@@ -1,8 +1,8 @@
 import React from 'react';
-import DrawerNavigation from '@app/navigations/DrawerNavigation.tsx';
+import { RootNavigation } from '@app/navigations/RootNavigation.tsx';
 
 function App(): React.JSX.Element {
-  return <DrawerNavigation />;
+  return <RootNavigation />;
 }
 
 export default App;

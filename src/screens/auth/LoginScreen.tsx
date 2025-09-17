@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 function LoginScreen() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>LoginScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

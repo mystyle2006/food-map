@@ -1,11 +1,11 @@
 import { SafeAreaView, Text } from 'react-native';
 
-function SignupScreen() {
+function EditLocationScreen() {
   return (
     <SafeAreaView>
-      <Text>SignupScreen</Text>
+      <Text>EditLocationScreen</Text>
     </SafeAreaView>
   );
 }
 
-export default SignupScreen;
+export default EditLocationScreen;

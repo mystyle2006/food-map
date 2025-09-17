@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 function FeedListScreen() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>FeedScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

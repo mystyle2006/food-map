@@ -1,8 +1,8 @@
 import React from 'react';
-import AuthNavigation from './src/navigations/AuthNavigation.tsx';
+import DrawerNavigation from '@app/navigations/DrawerNavigation.tsx';
 
 function App(): React.JSX.Element {
-  return <AuthNavigation />;
+  return <DrawerNavigation />;
 }
 
 export default App;

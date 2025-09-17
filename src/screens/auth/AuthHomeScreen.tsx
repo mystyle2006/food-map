@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView, Text, View} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView, Text, View } from 'react-native';
 
 function AuthHomeScreen() {
   const navigation = useNavigation();

@@ -4,6 +4,7 @@ import FeedDetailScreen from '@app/screens/feed/FeedDetailScreen';
 import FeedFavoriteScreen from '@app/screens/feed/FeedFavoriteScreen.tsx';
 import EditLocationScreen from '@app/screens/feed/EditLocationScreen.tsx';
 import { colors } from '@app/constants/colors.ts';
+import DrawerButton from '@app/components/DrawerButton.tsx';
 
 export const FeedStack = createStackNavigator({
   screenOptions: {
@@ -21,6 +22,10 @@ export const FeedStack = createStackNavigator({
   screens: {
     FeedList: {
       screen: FeedListScreen,
+      options: {
+        title: 'Feed',
+        headerLeft: () => <DrawerButton />,
+      },
     },
     FeedDetail: {
       screen: FeedDetailScreen,

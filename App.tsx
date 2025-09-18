@@ -3,11 +3,15 @@ import './global.css';
 import React from 'react';
 import { RootNavigation } from '@app/navigations/RootNavigation.tsx';
 
+import { GluestackUIProvider } from '@app/components/ui/gluestack-ui-provider';
+
 function App(): React.JSX.Element {
   return (
-    <>
-      <RootNavigation />
-    </>
+    <GluestackUIProvider mode="light">
+      <>
+        <RootNavigation />
+      </>
+    </GluestackUIProvider>
   );
 }
 

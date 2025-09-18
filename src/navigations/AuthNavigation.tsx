@@ -31,13 +31,23 @@ const AuthStack = createStackNavigator({
     Login: {
       screen: LoginScreen,
       options: {
-        title: 'LOGIN',
+        title: 'Login',
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
       },
     },
     Signup: {
       screen: SignupScreen,
       options: {
-        title: 'SIGNUP',
+        title: 'Sign up',
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
       },
     },
   },

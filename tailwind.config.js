@@ -18,6 +18,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      spacing: {
+        'container-x': '16px', // default global x padding
+      },
       colors: {
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',

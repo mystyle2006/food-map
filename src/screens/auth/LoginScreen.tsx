@@ -1,35 +1,48 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, TextInput, TextInputProps } from 'react-native';
 import {
   FormControl,
   FormControlError,
-  FormControlErrorIcon,
   FormControlErrorText,
   FormControlLabel,
   FormControlLabelText,
 } from '@app/components/ui/form-control';
 import { VStack } from '@app/components/ui/vstack';
 import { Input, InputField } from '@app/components/ui/input';
-import { AlertCircleIcon } from '@app/components/ui/icon';
 import { Button, ButtonText } from '@app/components/ui/button';
 import useForm from '@app/hooks/useForm.tsx';
+import { validateLogin } from '@app/validations/signin.valiation.ts';
+import { useRef } from 'react';
 
 function LoginScreen() {
+  const passwordRef = useRef<TextInputProps & TextInput>(null);
+
   const loginForm = useForm({
     initialValue: { email: '', password: '' },
+    validate: validateLogin,
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    console.log('login.values', loginForm.values);
+  };
 
   return (
     <SafeAreaView>
       <VStack className="px-container-x gap-3">
         {/* Email */}
-        <FormControl isInvalid={loginForm.errors.email} size="md">
+        <FormControl
+          isInvalid={!!(loginForm.touched.email && loginForm.errors.email)}
+          size="md"
+        >
           <FormControlLabel>
             <FormControlLabelText>Email</FormControlLabelText>
           </FormControlLabel>
           <Input className="my-1" size="md">
             <InputField
+              autoFocus
+              submitBehavior="submit"
+              returnKeyType="next"
+              inputMode="email"
+              onSubmitEditing={() => passwordRef?.current?.focus()}
               type="text"
               placeholder="email@example.com"
               keyboardType="email-address"
@@ -38,17 +51,17 @@ function LoginScreen() {
             />
           </Input>
           <FormControlError>
-            <FormControlErrorIcon
-              as={AlertCircleIcon}
-              className="text-red-500"
-            />
-            <FormControlErrorText className="text-red-500" />
+            <FormControlErrorText className="text-red-500">
+              {loginForm.errors.email}
+            </FormControlErrorText>
           </FormControlError>
         </FormControl>
 
         {/* Password */}
         <FormControl
-          isInvalid={loginForm.errors.password}
+          isInvalid={
+            !!(loginForm.touched.password && loginForm.errors.password)
+          }
           size="md"
           isDisabled={false}
           isReadOnly={false}
@@ -58,17 +71,18 @@ function LoginScreen() {
           </FormControlLabel>
           <Input className="my-1" size="md">
             <InputField
+              ref={passwordRef}
+              returnKeyType="join"
+              onSubmitEditing={handleSubmit}
               type="password"
               placeholder="password"
               {...loginForm.getTextInputProps('password')}
             />
           </Input>
           <FormControlError>
-            <FormControlErrorIcon
-              as={AlertCircleIcon}
-              className="text-red-500"
-            />
-            <FormControlErrorText className="text-red-500" />
+            <FormControlErrorText className="text-red-500">
+              {loginForm.errors.password}
+            </FormControlErrorText>
           </FormControlError>
         </FormControl>
 

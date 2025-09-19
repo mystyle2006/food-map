@@ -11,16 +11,11 @@ import { Input, InputField } from '@app/components/ui/input';
 import { AlertCircleIcon } from '@app/components/ui/icon';
 import { Button, ButtonText } from '@app/components/ui/button';
 import { VStack } from '@app/components/ui/vstack';
-import { useState } from 'react';
+import useForm from '@app/hooks/useForm.tsx';
 
 function SignupScreen() {
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    passwordConfirm: '',
+  const signupForm = useForm({
+    initialValue: { email: '', password: '', passwordConfirm: '' },
   });
 
   const handleSubmit = () => {
@@ -29,27 +24,13 @@ function SignupScreen() {
       password: '',
       passwordConfirm: '',
     };
-
-    if (!email) {
-      newErrors.email = 'Please enter a valid email address.';
-    }
-
-    if (!password) {
-      newErrors.password = 'Please enter a password';
-    }
-
-    if (!passwordConfirm) {
-      newErrors.passwordConfirm = 'Please confirm your password';
-    }
-
-    setErrors(newErrors);
   };
 
   return (
     <SafeAreaView>
       <VStack className="px-container-x gap-3">
         {/* Email */}
-        <FormControl isInvalid={!!errors.email} size="md">
+        <FormControl isInvalid={signupForm.errors.email} size="md">
           <FormControlLabel>
             <FormControlLabelText>Email</FormControlLabelText>
           </FormControlLabel>
@@ -57,10 +38,9 @@ function SignupScreen() {
             <InputField
               type="text"
               placeholder="email@example.com"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
               autoCapitalize="none"
+              {...signupForm.getTextInputProps('email')}
             />
           </Input>
           <FormControlError>
@@ -68,15 +48,13 @@ function SignupScreen() {
               as={AlertCircleIcon}
               className="text-red-500"
             />
-            <FormControlErrorText className="text-red-500">
-              {errors.email}
-            </FormControlErrorText>
+            <FormControlErrorText className="text-red-500" />
           </FormControlError>
         </FormControl>
 
         {/* Password */}
         <FormControl
-          isInvalid={!!errors.password}
+          isInvalid={signupForm.errors.password}
           size="md"
           isDisabled={false}
           isReadOnly={false}
@@ -88,8 +66,7 @@ function SignupScreen() {
             <InputField
               type="password"
               placeholder="password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
+              {...signupForm.getTextInputProps('password')}
             />
           </Input>
           <FormControlError>
@@ -97,28 +74,25 @@ function SignupScreen() {
               as={AlertCircleIcon}
               className="text-red-500"
             />
-            <FormControlErrorText className="text-red-500">
-              {errors.password}
-            </FormControlErrorText>
+            <FormControlErrorText className="text-red-500" />
           </FormControlError>
         </FormControl>
 
         {/* Password Confirm */}
         <FormControl
-          isInvalid={!!errors.password}
+          isInvalid={signupForm.errors.passwordConfirm}
           size="md"
           isDisabled={false}
           isReadOnly={false}
         >
           <FormControlLabel>
-            <FormControlLabelText>Password</FormControlLabelText>
+            <FormControlLabelText>Password Confirm</FormControlLabelText>
           </FormControlLabel>
           <Input className="my-1" size="md">
             <InputField
               type="password"
               placeholder="password"
-              value={passwordConfirm}
-              onChangeText={(text) => setPasswordConfirm(text)}
+              {...signupForm.getTextInputProps('passwordConfirm')}
             />
           </Input>
           <FormControlError>
@@ -126,9 +100,7 @@ function SignupScreen() {
               as={AlertCircleIcon}
               className="text-red-500"
             />
-            <FormControlErrorText className="text-red-500">
-              {errors.passwordConfirm}
-            </FormControlErrorText>
+            <FormControlErrorText className="text-red-500" />
           </FormControlError>
         </FormControl>
 

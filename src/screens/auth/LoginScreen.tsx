@@ -11,43 +11,20 @@ import { VStack } from '@app/components/ui/vstack';
 import { Input, InputField } from '@app/components/ui/input';
 import { AlertCircleIcon } from '@app/components/ui/icon';
 import { Button, ButtonText } from '@app/components/ui/button';
-import { useState } from 'react';
+import useForm from '@app/hooks/useForm.tsx';
 
 function LoginScreen() {
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
+  const loginForm = useForm({
+    initialValue: { email: '', password: '' },
   });
 
-  const handleSubmit = () => {
-    const newErrors = { email: '', password: '' };
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // 이메일 검증
-    if (!emailRegex.test(email)) {
-      newErrors.email = 'Please enter a valid email address.';
-    }
-
-    // 패스워드 검증
-    if (password.length < 6) {
-      newErrors.password = 'At least 6 characters are required.';
-    }
-
-    setErrors(newErrors);
-
-    // 둘 다 에러 없으면 제출 로직
-    if (!newErrors.email && !newErrors.password) {
-      console.log('✅ Form Submitted', { email, password: password });
-    }
-  };
+  const handleSubmit = () => {};
 
   return (
     <SafeAreaView>
       <VStack className="px-container-x gap-3">
         {/* Email */}
-        <FormControl isInvalid={!!errors.email} size="md">
+        <FormControl isInvalid={loginForm.errors.email} size="md">
           <FormControlLabel>
             <FormControlLabelText>Email</FormControlLabelText>
           </FormControlLabel>
@@ -55,10 +32,9 @@ function LoginScreen() {
             <InputField
               type="text"
               placeholder="email@example.com"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
               autoCapitalize="none"
+              {...loginForm.getTextInputProps('email')}
             />
           </Input>
           <FormControlError>
@@ -66,15 +42,13 @@ function LoginScreen() {
               as={AlertCircleIcon}
               className="text-red-500"
             />
-            <FormControlErrorText className="text-red-500">
-              {errors.email}
-            </FormControlErrorText>
+            <FormControlErrorText className="text-red-500" />
           </FormControlError>
         </FormControl>
 
         {/* Password */}
         <FormControl
-          isInvalid={!!errors.password}
+          isInvalid={loginForm.errors.password}
           size="md"
           isDisabled={false}
           isReadOnly={false}
@@ -86,8 +60,7 @@ function LoginScreen() {
             <InputField
               type="password"
               placeholder="password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
+              {...loginForm.getTextInputProps('password')}
             />
           </Input>
           <FormControlError>
@@ -95,9 +68,7 @@ function LoginScreen() {
               as={AlertCircleIcon}
               className="text-red-500"
             />
-            <FormControlErrorText className="text-red-500">
-              {errors.password}
-            </FormControlErrorText>
+            <FormControlErrorText className="text-red-500" />
           </FormControlError>
         </FormControl>
 

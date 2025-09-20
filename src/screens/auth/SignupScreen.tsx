@@ -12,8 +12,10 @@ import { VStack } from '@app/components/ui/vstack';
 import useForm from '@app/hooks/useForm.tsx';
 import { validateSignup } from '@app/validations/signup.valiation.ts';
 import { useRef } from 'react';
+import { useAuth } from '@app/hooks/useAuth.tsx';
 
 function SignupScreen() {
+  const { signupMutation, loginMutation } = useAuth();
   const passwordRef = useRef<TextInputProps & TextInput>(null);
   const passwordConfirmRef = useRef<TextInputProps & TextInput>(null);
 
@@ -23,7 +25,15 @@ function SignupScreen() {
   });
 
   const handleSubmit = () => {
-    console.log('signup.values', signupForm.values);
+    const { email, password } = signupForm.values;
+
+    signupMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => loginMutation.mutate({ email, password }),
+        onError: console.log,
+      },
+    );
   };
 
   return (

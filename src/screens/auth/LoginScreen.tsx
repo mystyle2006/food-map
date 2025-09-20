@@ -12,8 +12,10 @@ import { Button, ButtonText } from '@app/components/ui/button';
 import useForm from '@app/hooks/useForm.tsx';
 import { validateLogin } from '@app/validations/signin.valiation.ts';
 import { useRef } from 'react';
+import { useAuth } from '@app/hooks/useAuth.tsx';
 
 function LoginScreen() {
+  const { loginMutation } = useAuth();
   const passwordRef = useRef<TextInputProps & TextInput>(null);
 
   const loginForm = useForm({
@@ -22,7 +24,7 @@ function LoginScreen() {
   });
 
   const handleSubmit = () => {
-    console.log('login.values', loginForm.values);
+    loginMutation.mutate(loginForm.values);
   };
 
   return (

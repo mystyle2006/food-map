@@ -1,0 +1,14 @@
+import { QueryClient } from '@tanstack/react-query';
+import { numbers } from '@app/constants/numbers.ts';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: numbers.DEFAULT_QUERY_STALE_TIME,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});

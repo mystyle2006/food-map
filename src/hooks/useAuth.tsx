@@ -1,6 +1,7 @@
 import {
   getAccessToken,
   getProfile,
+  logout,
   postLogin,
   postSignup,
 } from '@app/api/auth';
@@ -19,6 +20,7 @@ import { removeHeader, setHeader } from '@app/utils/header';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { AuthType } from '@app/types/api/auth.ts';
+import { queryKeys, storageKeys } from '@app/constants/keys.ts';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
@@ -32,9 +34,9 @@ function useLogin(mutationOptions?: UseMutationCustomOptions<AuthType>) {
     mutationFn: postLogin,
     onSuccess: async ({ accessToken, refreshToken }) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
-      await setEncryptStorage('refreshToken', refreshToken);
+      await setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
       queryClient.fetchQuery({
-        queryKey: ['auth', 'getAccessToken'],
+        queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
       });
     },
     ...mutationOptions,
@@ -43,7 +45,7 @@ function useLogin(mutationOptions?: UseMutationCustomOptions<AuthType>) {
 
 function useGetRefreshToken() {
   const { data, isSuccess, isError } = useQuery<AuthType>({
-    queryKey: ['auth', 'getAccessToken'],
+    queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
     queryFn: getAccessToken,
     staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
     refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
@@ -53,7 +55,7 @@ function useGetRefreshToken() {
     (async () => {
       if (isSuccess && data) {
         setHeader('Authorization', `Bearer ${data.accessToken}`);
-        await setEncryptStorage('refreshToken', data.refreshToken);
+        await setEncryptStorage(storageKeys.REFRESH_TOKEN, data.refreshToken);
       }
     })();
   }, [isSuccess, data]);
@@ -62,7 +64,7 @@ function useGetRefreshToken() {
     (async () => {
       if (isError) {
         removeHeader('Authorization');
-        await removeEncryptStorage('refreshToken');
+        await removeEncryptStorage(storageKeys.REFRESH_TOKEN);
       }
     })();
   }, [isError]);
@@ -73,8 +75,20 @@ function useGetRefreshToken() {
 function useGetProfile(queryOptions?: UseQueryCustomOptions<Profile>) {
   return useQuery({
     queryFn: getProfile,
-    queryKey: ['auth', 'getProfile'],
+    queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
     ...queryOptions,
+  });
+}
+
+function useLogout(mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: async () => {
+      removeHeader('Authorization');
+      await removeEncryptStorage(storageKeys.REFRESH_TOKEN);
+      queryClient.resetQueries({ queryKey: [queryKeys.AUTH] });
+    },
+    ...mutationOptions,
   });
 }
 
@@ -82,9 +96,21 @@ export const useAuth = () => {
   const signupMutation = useSignup();
   const loginMutation = useLogin();
   const refreshTokenQuery = useGetRefreshToken();
-  const { isSuccess: isLogin } = useGetProfile({
+  const { data, isSuccess: isLogin } = useGetProfile({
     enabled: refreshTokenQuery.isSuccess,
   });
+  const logoutMutation = useLogout();
 
-  return { signupMutation, loginMutation, isLogin };
+  return {
+    auth: {
+      id: data?.id || '',
+      nickname: data?.nickname || '',
+      email: data?.email || '',
+      imageUri: data?.imageUri || '',
+    },
+    signupMutation,
+    loginMutation,
+    logoutMutation,
+    isLogin,
+  };
 };

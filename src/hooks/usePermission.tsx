@@ -1,43 +1,54 @@
 import { useEffect } from 'react';
 import { Alert, Linking, Platform } from 'react-native';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { alerts } from '@app/constants/messages.ts';
 
-function usePermission() {
+type PermissionType = 'LOCATION' | 'PHOTO';
+
+const androidPermissions = {
+  LOCATION: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  PHOTO: PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+};
+
+const iosPermissions = {
+  LOCATION: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+  PHOTO: PERMISSIONS.IOS.PHOTO_LIBRARY,
+};
+
+const showPermissionAlert = (type: PermissionType) => {
+  Alert.alert(
+    alerts[`${type}_PERMISSION`].TITLE,
+    alerts[`${type}_PERMISSION`].DESCRIPTION,
+    [
+      { text: 'Settings', onPress: () => Linking.openSettings() },
+      { text: 'Cancel', style: 'cancel' },
+    ],
+  );
+};
+
+function usePermission(type: PermissionType) {
   useEffect(() => {
     (async () => {
       const isAndroid = Platform.OS === 'android';
-      const permissionOS = isAndroid
-        ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-        : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
-      const checked = await check(permissionOS);
-
-      const showPermissionAlert = () => {
-        Alert.alert(
-          'Location permission is required.',
-          'Please allow location permission in settings.',
-          [
-            { text: 'Settings', onPress: () => Linking.openSettings() },
-            { text: 'Cancel', style: 'cancel' },
-          ],
-        );
-      };
+      const permissionOS = isAndroid ? androidPermissions : iosPermissions;
+      const checked = await check(permissionOS[type]);
 
       switch (checked) {
         case RESULTS.DENIED:
           if (isAndroid) {
-            showPermissionAlert();
+            showPermissionAlert(type);
             return;
           }
 
-          await request(permissionOS);
+          await request(permissionOS[type]);
           break;
         case RESULTS.BLOCKED:
         case RESULTS.LIMITED:
-          showPermissionAlert();
+          showPermissionAlert(type);
           break;
       }
     })();
-  }, []);
+  }, [type]);
 }
 
 export default usePermission;

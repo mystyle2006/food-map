@@ -1,13 +1,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStaticNavigation } from '@react-navigation/native';
-import CalendarScreen from '@app/screens/calendar/CalendarScreen.tsx';
-import { MapStack } from '@app/navigations/MapNavigation.tsx';
-import { FeedStack } from '@app/navigations/FeedNavigation.tsx';
-import { colors } from '@app/constants/colors.ts';
-import DrawerButton from '@app/components/DrawerButton.tsx';
-import CustomDrawerContent from '@app/components/CustomDrawerContent.tsx';
-import { DrawerIcons } from '@app/components/DrawerIcon.tsx';
-import { MainDrawerParamList } from '@app/types/navigation.ts';
+import CalendarScreen from '@app/screens/calendar/CalendarScreen';
+import { MapStack } from '@app/navigations/MapNavigation';
+import { FeedStack } from '@app/navigations/FeedNavigation';
+import { colors } from '@app/constants/colors';
+import DrawerButton from '@app/components/DrawerButton';
+import CustomDrawerContent from '@app/components/CustomDrawerContent';
+import { DrawerIcons } from '@app/components/DrawerIcon';
+import { MainDrawerParamList } from '@app/types/navigation';
 
 const DrawerNavigator = createDrawerNavigator({
   screenOptions: ({ route }) => {

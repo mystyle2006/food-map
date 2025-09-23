@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Alert, Linking, Platform } from 'react-native';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-import { alerts } from '@app/constants/messages.ts';
+import { alerts } from '@app/constants/messages';
 
 type PermissionType = 'LOCATION' | 'PHOTO';
 

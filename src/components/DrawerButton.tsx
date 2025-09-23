@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { MainDrawerParamList } from '@app/types/navigation.ts';
+import { MainDrawerParamList } from '@app/types/navigation';
 import Ionicons from '@react-native-vector-icons/ionicons';
-import { colors } from '@app/constants/colors.ts';
+import { colors } from '@app/constants/colors';
 
 type NavigationType = DrawerNavigationProp<MainDrawerParamList>;
 

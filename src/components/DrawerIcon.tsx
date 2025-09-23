@@ -1,6 +1,6 @@
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import { MainDrawerParamList } from '@app/types/navigation.ts';
-import { colors } from '@app/constants/colors.ts';
+import { MainDrawerParamList } from '@app/types/navigation';
+import { colors } from '@app/constants/colors';
 
 type DrawerIconName = 'map' | 'book' | 'calendar';
 

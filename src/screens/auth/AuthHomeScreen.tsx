@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AuthStackParamList } from '@app/types/navigation.ts';
+import { AuthStackParamList } from '@app/types/navigation';
 import Logo from '@app/assets/logo.svg';
 import React from 'react';
 import { Button, ButtonText } from '@app/components/ui/button';

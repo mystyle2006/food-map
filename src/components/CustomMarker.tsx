@@ -2,7 +2,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import React from 'react';
 import { View } from 'react-native';
 import { LatLng, MapMarkerProps, Marker } from 'react-native-maps';
-import { colors } from '@app/constants/colors.ts';
+import { colors } from '@app/constants/colors';
 
 interface CustomMarkerProps extends MapMarkerProps {
   coordinate: LatLng;

@@ -1,4 +1,4 @@
-import { AccountInformationType } from '@app/types/account.ts';
+import { AccountInformationType } from '@app/types/account';
 
 export const validateAccount = (values: AccountInformationType) => {
   const errors = {

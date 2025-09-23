@@ -9,10 +9,10 @@ import {
 import { Input, InputField } from '@app/components/ui/input';
 import { Button, ButtonText } from '@app/components/ui/button';
 import { VStack } from '@app/components/ui/vstack';
-import useForm from '@app/hooks/useForm.tsx';
+import useForm from '@app/hooks/useForm';
 import { validateSignup } from '@app/validations/signup.valiation.ts';
 import { useRef } from 'react';
-import { useAuth } from '@app/hooks/useAuth.tsx';
+import { useAuth } from '@app/hooks/useAuth';
 
 function SignupScreen() {
   const { signupMutation, loginMutation } = useAuth();

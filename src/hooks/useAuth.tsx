@@ -10,7 +10,7 @@ import { numbers } from '@app/constants/numbers';
 import {
   UseMutationCustomOptions,
   UseQueryCustomOptions,
-} from '@app/types/api/api.ts';
+} from '@app/types/api/api';
 import { Profile } from '@app/types/domains';
 import {
   removeEncryptStorage,
@@ -19,8 +19,8 @@ import {
 import { removeHeader, setHeader } from '@app/utils/header';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { AuthType } from '@app/types/api/auth.ts';
-import { queryKeys, storageKeys } from '@app/constants/keys.ts';
+import { AuthType } from '@app/types/api/auth';
+import { queryKeys, storageKeys } from '@app/constants/keys';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({

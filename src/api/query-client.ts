@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { numbers } from '@app/constants/numbers.ts';
+import { numbers } from '@app/constants/numbers';
 
 export const queryClient = new QueryClient({
   defaultOptions: {

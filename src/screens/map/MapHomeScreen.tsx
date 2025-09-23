@@ -14,6 +14,7 @@ import {
   ToastTitle,
   useToast,
 } from '@app/components/ui/toast';
+import CustomMarker from '@app/components/CustomMarker';
 
 function MapHomeScreen() {
   const toast = useToast();
@@ -72,7 +73,13 @@ function MapHomeScreen() {
           ...numbers.INITIAL_DELTA,
         }}
         provider={PROVIDER_GOOGLE}
-      />
+      >
+        <CustomMarker
+          color={colors.PINK_400}
+          score={4}
+          coordinate={userLocation}
+        />
+      </MapView>
       <View className="absolute bottom-[30px] right-[20px] z-10">
         <Pressable
           className="bg-primary-700 w-[45px] h-[45px] rounded-full flex items-center justify-center my-[5px] shadow-lg"

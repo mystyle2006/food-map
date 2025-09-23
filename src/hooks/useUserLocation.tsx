@@ -18,12 +18,10 @@ export function useUserLocation() {
 
     Geolocation.getCurrentPosition(
       (info) => {
-        console.log(info);
         setUserLocation(info.coords);
+        setIsUserLocationError(false);
       },
-      () => {
-        {
-        }
+      (error) => {
         setIsUserLocationError(true);
       },
       {

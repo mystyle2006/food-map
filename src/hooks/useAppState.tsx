@@ -12,9 +12,10 @@ function useAppState() {
         nextAppState === 'active'
       ) {
         setIsComeback(true);
-      }
-
-      if (appState.current.match(/active/) && nextAppState === 'background') {
+      } else if (
+        appState.current.match(/active/) &&
+        nextAppState === 'background'
+      ) {
         setIsComeback(false);
       }
 

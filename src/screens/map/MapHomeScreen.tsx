@@ -1,13 +1,12 @@
 import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
-import DrawerButton from '@app/components/DrawerButton.tsx';
-import { colors } from '@app/constants/colors.ts';
+import { StyleSheet, View, Pressable } from 'react-native';
+import DrawerButton from '@app/components/DrawerButton';
+import { colors } from '@app/constants/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRef } from 'react';
 import { useUserLocation } from '@app/hooks/useUserLocation';
-import { numbers } from '@app/constants/numbers.ts';
+import { numbers } from '@app/constants/numbers';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import usePermission from '@app/hooks/usePermission.tsx';
+import usePermission from '@app/hooks/usePermission';
 import {
   Toast,
   ToastDescription,
@@ -15,22 +14,16 @@ import {
   useToast,
 } from '@app/components/ui/toast';
 import CustomMarker from '@app/components/CustomMarker';
+import useMoveMapView from '@app/hooks/useMoveMapView';
 
 function MapHomeScreen() {
   const toast = useToast();
   const inset = useSafeAreaInsets();
 
-  const mapRef = useRef<MapView | null>(null);
   const { userLocation, isUserLocationError } = useUserLocation();
+  const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
 
   usePermission('LOCATION');
-
-  const moveMapView = (coordinate: LatLng) => {
-    mapRef.current?.animateToRegion({
-      ...coordinate,
-      ...numbers.INITIAL_DELTA,
-    });
-  };
 
   const handlePressUserLocation = () => {
     if (isUserLocationError) {
@@ -58,6 +51,10 @@ function MapHomeScreen() {
     moveMapView(userLocation);
   };
 
+  const handlePressMarker = (coordinate: LatLng) => {
+    moveMapView(coordinate);
+  };
+
   return (
     <View className="" style={styles.container}>
       <DrawerButton
@@ -68,17 +65,29 @@ function MapHomeScreen() {
       <MapView
         style={styles.map}
         ref={mapRef}
+        onRegionChangeComplete={handleChangeDelta}
         region={{
           ...userLocation,
           ...numbers.INITIAL_DELTA,
         }}
         provider={PROVIDER_GOOGLE}
       >
-        <CustomMarker
-          color={colors.PINK_400}
-          score={4}
-          coordinate={userLocation}
-        />
+        {[
+          {
+            id: 1,
+            color: colors.PINK_400,
+            score: 3,
+            coordinate: userLocation,
+          },
+        ].map((marker) => (
+          <CustomMarker
+            key={marker.id}
+            color={marker.color}
+            score={marker.score}
+            coordinate={marker.coordinate}
+            onPress={() => handlePressMarker(marker.coordinate)}
+          />
+        ))}
       </MapView>
       <View className="absolute bottom-[30px] right-[20px] z-10">
         <Pressable

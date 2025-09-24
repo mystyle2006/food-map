@@ -15,7 +15,6 @@ import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
 import { getDateWithSeparator } from '@app/utils/dates';
 import { Avatar, AvatarImage } from '@app/components/ui/avatar';
-import { FavouriteIcon, Icon } from '@app/components/ui/icon';
 
 interface MarkerModalProps {
   markerId: number;

@@ -1,0 +1,57 @@
+import { baseUrls } from '@app/api/axios';
+import { Post } from '@app/types/domains';
+import { getDateWithSeparator } from '@app/utils/dates';
+import React from 'react';
+import {
+  Image,
+  Platform,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+
+interface FeedItemProps {
+  post: Post;
+}
+
+function FeedItem({ post }: FeedItemProps) {
+  const { width } = useWindowDimensions();
+  const imageSize = width / 2 - 25;
+  return (
+    <Pressable className="flex-1 m-[5px] my-3">
+      {post.imageUris.length > 0 && (
+        <View style={{ width: imageSize, height: imageSize }}>
+          <Image
+            className="w-full h-full rounded"
+            source={{
+              uri: `${
+                Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
+              }/${post.imageUris[0].uri}`,
+            }}
+            resizeMode="cover"
+          />
+        </View>
+      )}
+      {post.imageUris.length === 0 && (
+        <View
+          style={{ width: imageSize, height: imageSize }}
+          className="justify-center items-center border border-gray-300 rounded"
+        >
+          <Text className="text-gray-500 text-[13px]">No Image</Text>
+        </View>
+      )}
+      <View className="mt-[7px] gap-[2px]">
+        <Text className="text-pink-700 font-semibold text-xs">
+          {getDateWithSeparator(post.date, '/')}
+        </Text>
+        <Text className="text-black font-medium text-[13px]">{post.title}</Text>
+        <Text className="text-gray-500 text-[13px]" numberOfLines={1}>
+          {post.description}
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
+export default FeedItem;

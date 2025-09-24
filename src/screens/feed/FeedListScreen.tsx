@@ -1,18 +1,10 @@
-import { SafeAreaView, Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { FeedStackParamList } from '@app/types/navigation';
-import { useNavigation } from '@react-navigation/native';
-
-type NavigationType = StackNavigationProp<FeedStackParamList>;
+import { SafeAreaView } from 'react-native';
+import FeedList from '@app/components/feed/FeedList';
 
 function FeedListScreen() {
-  const navigation = useNavigation<NavigationType>();
   return (
-    <SafeAreaView>
-      <Text>FeedScreen</Text>
-      <Text onPress={() => navigation.navigate('FeedDetail', { id: 1 })}>
-        first place
-      </Text>
+    <SafeAreaView className="flex-1">
+      <FeedList />
     </SafeAreaView>
   );
 }

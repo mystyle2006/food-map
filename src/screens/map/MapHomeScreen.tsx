@@ -1,11 +1,10 @@
-import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View, Pressable } from 'react-native';
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Alert, StyleSheet, View } from 'react-native';
 import DrawerButton from '@app/components/DrawerButton';
 import { colors } from '@app/constants/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUserLocation } from '@app/hooks/useUserLocation';
 import { numbers } from '@app/constants/numbers';
-import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import usePermission from '@app/hooks/usePermission';
 import {
   Toast,
@@ -15,13 +14,24 @@ import {
 } from '@app/components/ui/toast';
 import CustomMarker from '@app/components/CustomMarker';
 import useMoveMapView from '@app/hooks/useMoveMapView';
+import { MapIconButton } from '@app/components/MapIconButton';
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MapStackParamList } from '@app/types/navigation';
+import useGetMarkers from '@app/hooks/useGetMarkers';
+
+type Navigation = StackNavigationProp<MapStackParamList>;
 
 function MapHomeScreen() {
+  const navigation = useNavigation<Navigation>();
   const toast = useToast();
   const inset = useSafeAreaInsets();
+  const [selectLocation, setSelectLocation] = useState<LatLng | null>();
 
   const { userLocation, isUserLocationError } = useUserLocation();
   const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
+  const { data: markers = [] } = useGetMarkers();
 
   usePermission('LOCATION');
 
@@ -55,6 +65,23 @@ function MapHomeScreen() {
     moveMapView(coordinate);
   };
 
+  const handlePressAddPost = () => {
+    if (!selectLocation) {
+      Alert.alert(
+        'Please select a location',
+        'Press and hold the map to select a location.',
+      );
+      return;
+    }
+
+    navigation.navigate('AddLocation', {
+      location: selectLocation,
+    });
+    setSelectLocation(null);
+  };
+
+  console.log(userLocation);
+
   return (
     <View className="" style={styles.container}>
       <DrawerButton
@@ -66,41 +93,33 @@ function MapHomeScreen() {
         style={styles.map}
         ref={mapRef}
         onRegionChangeComplete={handleChangeDelta}
+        onLongPress={({ nativeEvent }) =>
+          setSelectLocation(nativeEvent.coordinate)
+        }
         region={{
           ...userLocation,
           ...numbers.INITIAL_DELTA,
         }}
         provider={PROVIDER_GOOGLE}
       >
-        {[
-          {
-            id: 1,
-            color: colors.PINK_400,
-            score: 3,
-            coordinate: userLocation,
-          },
-        ].map((marker) => (
+        {markers.map(({ id, color, score, ...coordinate }) => (
           <CustomMarker
-            key={marker.id}
-            color={marker.color}
-            score={marker.score}
-            coordinate={marker.coordinate}
-            onPress={() => handlePressMarker(marker.coordinate)}
+            key={id}
+            color={color}
+            score={score}
+            coordinate={coordinate}
+            onPress={() => handlePressMarker(coordinate)}
           />
         ))}
+
+        {selectLocation && <Marker coordinate={selectLocation} />}
       </MapView>
       <View className="absolute bottom-[30px] right-[20px] z-10">
-        <Pressable
-          className="bg-primary-700 w-[45px] h-[45px] rounded-full flex items-center justify-center my-[5px] shadow-lg"
+        <MapIconButton onPress={handlePressAddPost} name="plus" />
+        <MapIconButton
           onPress={handlePressUserLocation}
-        >
-          <FontAwesome6
-            name="location-crosshairs"
-            iconStyle="solid"
-            size={25}
-            color={colors.WHITE}
-          />
-        </Pressable>
+          name="location-crosshairs"
+        />
       </View>
     </View>
   );

@@ -10,8 +10,8 @@ function useForm<T>({ initialValue, validate }: UseFormProps<T>) {
   const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
 
-  const handleChangeValue = (name: keyof T, text: string) => {
-    setValues((prev) => ({ ...prev, [name]: text }));
+  const handleChangeValue = (name: keyof T, value: string | number | Date) => {
+    setValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleBlur = (name: keyof T) => {
@@ -19,7 +19,7 @@ function useForm<T>({ initialValue, validate }: UseFormProps<T>) {
   };
 
   const getTextInputProps = (name: keyof T) => {
-    const value = values[name];
+    const value = values[name] as string;
     const onChangeText = (v: string) => handleChangeValue(name, v);
     const onBlur = () => handleBlur(name);
 
@@ -35,7 +35,13 @@ function useForm<T>({ initialValue, validate }: UseFormProps<T>) {
     setErrors(newErrors);
   }, [validate, values]);
 
-  return { values, touched, errors, getTextInputProps };
+  return {
+    values,
+    touched,
+    errors,
+    onChange: handleChangeValue,
+    getTextInputProps,
+  };
 }
 
 export default useForm;

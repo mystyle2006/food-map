@@ -20,6 +20,16 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MapStackParamList } from '@app/types/navigation';
 import useGetMarkers from '@app/hooks/useGetMarkers';
+import { useModal } from '@app/hooks/useModal.ts';
+import {
+  Actionsheet,
+  ActionsheetBackdrop,
+  ActionsheetContent,
+  ActionsheetDragIndicator,
+  ActionsheetDragIndicatorWrapper,
+} from '@app/components/ui/actionsheet';
+import { Text } from '@app/components/ui/text';
+import { MarkerBottomModal } from '@app/components/MarkerBottomModal.tsx';
 
 type Navigation = StackNavigationProp<MapStackParamList>;
 
@@ -27,6 +37,8 @@ function MapHomeScreen() {
   const navigation = useNavigation<Navigation>();
   const toast = useToast();
   const inset = useSafeAreaInsets();
+  const markerModal = useModal();
+  const [markerId, setSetMarkerId] = useState<number>();
   const [selectLocation, setSelectLocation] = useState<LatLng | null>();
 
   const { userLocation, isUserLocationError } = useUserLocation();
@@ -61,8 +73,10 @@ function MapHomeScreen() {
     moveMapView(userLocation);
   };
 
-  const handlePressMarker = (coordinate: LatLng) => {
+  const handlePressMarker = (id: number, coordinate: LatLng) => {
+    setSetMarkerId(id);
     moveMapView(coordinate);
+    markerModal.show();
   };
 
   const handlePressAddPost = () => {
@@ -108,7 +122,7 @@ function MapHomeScreen() {
             color={color}
             score={score}
             coordinate={coordinate}
-            onPress={() => handlePressMarker(coordinate)}
+            onPress={() => handlePressMarker(id, coordinate)}
           />
         ))}
 
@@ -121,6 +135,12 @@ function MapHomeScreen() {
           name="location-crosshairs"
         />
       </View>
+
+      <MarkerBottomModal
+        markerId={Number(markerId)}
+        isOpen={markerModal.isVisible}
+        onClose={markerModal.hide}
+      />
     </View>
   );
 }

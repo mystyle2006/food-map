@@ -20,16 +20,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MapStackParamList } from '@app/types/navigation';
 import useGetMarkers from '@app/hooks/useGetMarkers';
-import { useModal } from '@app/hooks/useModal.ts';
-import {
-  Actionsheet,
-  ActionsheetBackdrop,
-  ActionsheetContent,
-  ActionsheetDragIndicator,
-  ActionsheetDragIndicatorWrapper,
-} from '@app/components/ui/actionsheet';
-import { Text } from '@app/components/ui/text';
-import { MarkerBottomModal } from '@app/components/MarkerBottomModal.tsx';
+import { useModal } from '@app/hooks/useModal';
+import { MarkerBottomModal } from '@app/components/MarkerBottomModal';
 
 type Navigation = StackNavigationProp<MapStackParamList>;
 

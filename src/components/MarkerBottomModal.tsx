@@ -1,99 +1,106 @@
-import { baseUrls } from '@app/api/axios';
+import React from 'react';
 import {
-  Actionsheet,
-  ActionsheetBackdrop,
-  ActionsheetContent,
-  ActionsheetDragIndicator,
-  ActionsheetDragIndicatorWrapper,
-} from '@app/components/ui/actionsheet';
-import useGetPost from '@app/hooks/useGetPost';
-import { Image, Platform, View } from 'react-native';
-import { HStack } from '@app/components/ui/hstack';
-import { Text } from '@app/components/ui/text';
-import { Avatar, AvatarImage } from '@app/components/ui/avatar';
+  Image,
+  Modal,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
+import useGetPost from '@app/hooks/useGetPost';
+import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
 import { getDateWithSeparator } from '@app/utils/dates';
-import { Box } from '@app/components/ui/box';
+import { Avatar, AvatarImage } from '@app/components/ui/avatar';
+import { FavouriteIcon, Icon } from '@app/components/ui/icon';
 
-interface MarkerBottomModalProps {
+interface MarkerModalProps {
   markerId: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const MarkerBottomModal = ({
+  markerId,
   isOpen,
   onClose,
-  markerId,
-}: MarkerBottomModalProps) => {
+}: MarkerModalProps) => {
   const { data: post, isPending, isError } = useGetPost(markerId);
-
-  console.log(isPending, isError);
+  const { width } = useWindowDimensions();
 
   if (isPending || isError) {
     return <></>;
   }
 
-  console.log(post);
-
   return (
-    <Actionsheet isOpen={isOpen} onClose={onClose}>
-      <ActionsheetBackdrop />
-      <ActionsheetContent>
-        <ActionsheetDragIndicatorWrapper>
-          <ActionsheetDragIndicator />
-        </ActionsheetDragIndicatorWrapper>
-        <HStack space="md" className="py-3">
-          <Box>
-            {post.imageUris.length > 0 && (
-              <View>
-                <Image
-                  source={{
-                    uri: `${
-                      Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                    }/${post.imageUris[0]?.uri}`,
-                  }}
-                  resizeMode="cover"
-                />
-                <Avatar size="xl">
-                  <AvatarImage
-                    source={{
-                      uri: `${
-                        Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                      }/${post.imageUris[0]?.uri}`,
-                    }}
+    <Modal visible={isOpen} transparent animationType="slide">
+      <SafeAreaView className="flex-1 justify-end" onTouchEnd={onClose}>
+        <Pressable className="bg-white m-2.5 border border-[#8E8E8E] rounded-2xl shadow-sm">
+          <View className="p-5 w-full flex-row items-center justify-between">
+            <View className="flex-row items-center justify-center">
+              {post.imageUris.length > 0 && (
+                <View className="rounded-full ">
+                  <Avatar
+                    size="lg"
+                    className="bg-gray-200 border border-gray-300"
+                  >
+                    {post?.imageUris?.length > 0 && (
+                      <AvatarImage
+                        source={{
+                          uri: `${
+                            Platform.OS === 'ios'
+                              ? baseUrls.ios
+                              : baseUrls.android
+                          }/${post.imageUris[0]?.uri}`,
+                        }}
+                      />
+                    )}
+                    {post.imageUris.length === 0 && (
+                      <>
+                        <Text className="text-xs text-gray-700">No</Text>
+                        <Text className="text-xs text-gray-700">Photo</Text>
+                      </>
+                    )}
+                  </Avatar>
+                </View>
+              )}
+              <View className="ml-4 gap-[5px]" style={{ width: width - 180 }}>
+                <View className="flex-row items-center gap-0.5">
+                  <Ionicons
+                    name="location-outline"
+                    size={10}
+                    color={colors.GRAY_500}
                   />
-                </Avatar>
-              </View>
-            )}
-          </Box>
-          <Box className="justify-center">
-            <View className="gap-1">
-              <View className="flex-row items-center w-full">
-                <Ionicons
-                  className="justify-center"
-                  name="location-outline"
-                  size={10}
-                  color={colors.GRAY_500}
-                />
-                <Text className="text-gray-500 text-[10px]">
-                  {post.address}
+                  <Text
+                    className="text-[#8E8E8E] text-[10px]"
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {post.address}ㄴㅁㅇㅁㄴㅇㅁㄴㅇㄴㅇㅁㄴㅇㅁㄴㅇ
+                  </Text>
+                </View>
+                <Text
+                  className="text-black text-[15px] font-bold"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {post.title}
+                </Text>
+                <Text className="text-xs font-bold text-pink-700">
+                  {getDateWithSeparator(post.date, '.')}
                 </Text>
               </View>
-              <Text className="text-black text-[15px] font-bold">
-                {post.title}
-              </Text>
-              <Text className="text-[12px] text-primary-500">
-                {getDateWithSeparator(post.date, '.')}
-              </Text>
             </View>
-          </Box>
-          <Box className="justify-center">
-            <Ionicons name="chevron-forward" size={23} color={colors.BLACK} />
-          </Box>
-        </HStack>
-      </ActionsheetContent>
-    </Actionsheet>
+
+            <View className="w-10 h-10 items-end justify-center">
+              <Ionicons name="chevron-forward" size={25} color={colors.BLACK} />
+            </View>
+          </View>
+        </Pressable>
+      </SafeAreaView>
+    </Modal>
   );
 };

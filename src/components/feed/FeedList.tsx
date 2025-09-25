@@ -28,7 +28,7 @@ function FeedList() {
   return (
     <FlatList
       data={posts?.pages?.flat() || []}
-      renderItem={({ item }) => <FeedItem post={item} />}
+      renderItem={({ item }) => <FeedItem key={String(item.id)} post={item} />}
       keyExtractor={(item) => String(item.id)}
       numColumns={2}
       contentContainerClassName="p-[15px]"
@@ -37,7 +37,6 @@ function FeedList() {
       onRefresh={handleRefresh}
       refreshing={isRefreshing}
       scrollIndicatorInsets={{ right: 1 }}
-      indicatorStyle="black"
     />
   );
 }

@@ -38,6 +38,12 @@ export const FeedStack = createStackNavigator({
     },
     EditLocation: {
       screen: EditLocationScreen,
+      options: {
+        title: 'Edit Location',
+        cardStyle: {
+          backgroundColor: colors.WHITE,
+        },
+      },
     },
   },
 });

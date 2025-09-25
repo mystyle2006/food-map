@@ -57,7 +57,7 @@ function AddLocationScreen({ route }: AddLocationScreenProps) {
     validate: validateAddPost,
   });
   const inset = useSafeAreaInsets();
-  const imagePicker = useImagePicker();
+  const imagePicker = useImagePicker({ initialImages: [] });
   const { address } = useGetAddress(location);
   const createPost = useMutateCreatePost();
 

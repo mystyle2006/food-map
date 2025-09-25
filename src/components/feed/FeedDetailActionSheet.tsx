@@ -13,6 +13,8 @@ import { EditIcon, TrashIcon } from '@app/components/ui/icon';
 import { useNavigation } from '@react-navigation/native';
 import { useMutateDeletePost } from '@app/hooks/useMutateDeletePost';
 import { Alert } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { FeedStackParamList } from '@app/types/navigation';
 
 interface FeedDetailActionSheetProps {
   id: number;
@@ -25,7 +27,7 @@ function FeedDetailActionSheet({
   isOpen,
   onClose,
 }: FeedDetailActionSheetProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<FeedStackParamList>>();
   const deletePost = useMutateDeletePost();
   const handleDeletePost = () => {
     Alert.alert(
@@ -51,6 +53,11 @@ function FeedDetailActionSheet({
     );
   };
 
+  const handleEditPost = () => {
+    navigation.navigate('EditLocation', { id });
+    onClose();
+  };
+
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <ActionsheetBackdrop />
@@ -64,7 +71,7 @@ function FeedDetailActionSheet({
             Delete
           </ActionsheetItemText>
         </ActionsheetItem>
-        <ActionsheetItem onPress={onClose}>
+        <ActionsheetItem onPress={handleEditPost}>
           <ActionsheetIcon className="stroke-background-700" as={EditIcon} />
           <ActionsheetItemText>Edit</ActionsheetItemText>
         </ActionsheetItem>

@@ -1,4 +1,4 @@
-import { colors } from '@app/constants/colors.ts';
+import { colors } from '@app/constants/colors';
 import { Pressable } from 'react-native';
 import { ComponentProps } from 'react';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
@@ -22,7 +22,7 @@ export const MapIconButton = ({ onPress, name }: MapIconButtonProps) => {
       <FontAwesome6
         name={name}
         iconStyle="solid"
-        size={25}
+        size={20}
         color={colors.WHITE}
       />
     </Pressable>

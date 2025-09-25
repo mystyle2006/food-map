@@ -6,8 +6,8 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { FeedStackParamList } from '@app/types/navigation';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { FeedStackParamList, MainDrawerParamList } from '@app/types/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useGetPost from '@app/hooks/useGetPost';
 import Ionicons from '@react-native-vector-icons/ionicons';
@@ -17,12 +17,20 @@ import { getDateWithSeparator } from '@app/utils/dates';
 import PreviewImageList from '@app/components/PreviewImageList';
 import { Button, ButtonText } from '@app/components/ui/button';
 import React from 'react';
+import { useLocationStore } from '@app/store/location';
+import { useNavigation } from '@react-navigation/native';
+import { useModal } from '@app/hooks/useModal';
+import FeedDetailActionSheet from '@app/components/feed/FeedDetailActionSheet';
 
 type Props = StackScreenProps<FeedStackParamList, 'FeedDetail'>;
+type NavigationType = StackNavigationProp<MainDrawerParamList>;
 
 function FeedDetailScreen({ route }: Props) {
   const { id } = route.params;
   const { width } = useWindowDimensions();
+  const { setMoveLocation } = useLocationStore();
+  const navigation = useNavigation<NavigationType>();
+  const detailAction = useModal();
 
   const insets = useSafeAreaInsets();
   const { data: post, isPending, isError } = useGetPost(id);
@@ -30,6 +38,15 @@ function FeedDetailScreen({ route }: Props) {
   if (isPending || isError) {
     return <></>;
   }
+
+  const handlePressLocation = () => {
+    const { latitude, longitude } = post;
+    setMoveLocation({ latitude, longitude });
+
+    navigation.navigate('Map', {
+      screen: 'MapHome',
+    });
+  };
 
   return (
     <>
@@ -41,6 +58,7 @@ function FeedDetailScreen({ route }: Props) {
           name="chevron-back"
           size={24}
           color={colors.WHITE}
+          onPress={() => navigation.goBack()}
           style={{
             textShadowColor: 'rgba(0, 0, 0, 0.2)',
             textShadowOffset: { width: 1, height: 1 },
@@ -51,6 +69,7 @@ function FeedDetailScreen({ route }: Props) {
           name="ellipsis-vertical"
           size={20}
           color={colors.WHITE}
+          onPress={() => detailAction.show()}
           style={{
             textShadowColor: 'rgba(0, 0, 0, 0.2)',
             textShadowOffset: { width: 1, height: 1 },
@@ -132,10 +151,15 @@ function FeedDetailScreen({ route }: Props) {
         <Button size="sm">
           <Ionicons name="star" size={18} color={colors.WHITE} />
         </Button>
-        <Button size="sm">
+        <Button size="sm" onPress={handlePressLocation}>
           <ButtonText>Go to Location</ButtonText>
         </Button>
       </View>
+
+      <FeedDetailActionSheet
+        isOpen={detailAction.isVisible}
+        onClose={detailAction.hide}
+      />
     </>
   );
 }

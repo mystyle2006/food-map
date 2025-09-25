@@ -15,13 +15,14 @@ import {
 import CustomMarker from '@app/components/CustomMarker';
 import useMoveMapView from '@app/hooks/useMoveMapView';
 import { MapIconButton } from '@app/components/MapIconButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MapStackParamList } from '@app/types/navigation';
 import useGetMarkers from '@app/hooks/useGetMarkers';
 import { useModal } from '@app/hooks/useModal';
 import { MarkerBottomModal } from '@app/components/MarkerBottomModal';
+import { useLocationStore } from '@app/store/location';
 
 type Navigation = StackNavigationProp<MapStackParamList>;
 
@@ -36,6 +37,7 @@ function MapHomeScreen() {
   const { userLocation, isUserLocationError } = useUserLocation();
   const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
   const { data: markers = [] } = useGetMarkers();
+  const { moveLocation } = useLocationStore();
 
   usePermission('LOCATION');
 
@@ -86,7 +88,9 @@ function MapHomeScreen() {
     setSelectLocation(null);
   };
 
-  console.log(userLocation);
+  useEffect(() => {
+    moveLocation && moveMapView(moveLocation);
+  }, [moveLocation, moveMapView]);
 
   return (
     <View className="" style={styles.container}>

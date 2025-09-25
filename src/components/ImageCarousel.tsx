@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Dimensions,
   FlatList,
   Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Platform,
   Pressable,
-  StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
@@ -20,15 +21,25 @@ interface ImageCarouselProps {
   pressedIndex?: number;
 }
 
-function ImageCarousel({ images, pressedIndex }: ImageCarouselProps) {
+function ImageCarousel({ images, pressedIndex = 0 }: ImageCarouselProps) {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const deviceWidth = Dimensions.get('window').width;
+  const { width: deviceWidth } = useWindowDimensions();
+
+  const [initialIndex, setInitialIndex] = useState(pressedIndex);
+  const [page, setPage] = useState(pressedIndex);
+
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const newPage = Math.round(e.nativeEvent.contentOffset.x / deviceWidth);
+
+    setPage(newPage);
+  };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center bg-black">
       <Pressable
-        style={[styles.backButton, { marginTop: insets.top + 10 }]}
+        className="absolute left-5 z-10 h-10 w-10 rounded-full items-center justify-center"
+        style={{ marginTop: insets.top + 10 }}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="chevron-back" size={30} color={colors.WHITE} />
@@ -39,7 +50,7 @@ function ImageCarousel({ images, pressedIndex }: ImageCarouselProps) {
         renderItem={({ item }) => (
           <View style={{ width: deviceWidth }}>
             <Image
-              style={styles.image}
+              className="w-full h-full"
               source={{
                 uri: `${
                   Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
@@ -49,34 +60,31 @@ function ImageCarousel({ images, pressedIndex }: ImageCarouselProps) {
             />
           </View>
         )}
+        onScroll={handleScroll}
         keyExtractor={(item) => String(item.id)}
         horizontal
         pagingEnabled
+        initialScrollIndex={initialIndex}
+        onScrollToIndexFailed={() => {
+          setInitialIndex(pressedIndex);
+        }}
       />
+
+      <View
+        className="flex-row items-center absolute"
+        style={{ bottom: insets.bottom + 10 }}
+      >
+        {Array.from({ length: images.length }, (_, index) => (
+          <View
+            key={index}
+            className={`m-1 w-2 h-2 rounded-full ${
+              index === page ? 'bg-red-500' : 'bg-gray-200'
+            }`}
+          />
+        ))}
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: colors.BLACK,
-  },
-  backButton: {
-    position: 'absolute',
-    left: 20,
-    zIndex: 1,
-    height: 40,
-    width: 40,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default ImageCarousel;

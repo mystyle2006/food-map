@@ -8,9 +8,14 @@ import { colors } from '@app/constants/colors';
 interface PreviewImageListProps {
   imageUris: ImageUri[];
   onDelete?: (uri: string) => void;
+  deletable?: boolean;
 }
 
-function PreviewImageList({ imageUris, onDelete }: PreviewImageListProps) {
+function PreviewImageList({
+  imageUris,
+  onDelete,
+  deletable = true,
+}: PreviewImageListProps) {
   return (
     <ScrollView horizontal contentContainerClassName="gap-[15px] px-[15px]">
       {imageUris.map(({ uri }) => {
@@ -25,12 +30,14 @@ function PreviewImageList({ imageUris, onDelete }: PreviewImageListProps) {
               }}
               resizeMode="cover"
             />
-            <Pressable
-              className="absolute top-0 right-0 bg-black"
-              onPress={() => onDelete?.(uri)}
-            >
-              <Ionicons name="close" size={16} color={colors.WHITE} />
-            </Pressable>
+            {deletable && (
+              <Pressable
+                className="absolute top-0 right-0 bg-black"
+                onPress={() => onDelete?.(uri)}
+              >
+                <Ionicons name="close" size={16} color={colors.WHITE} />
+              </Pressable>
+            )}
           </Pressable>
         );
       })}

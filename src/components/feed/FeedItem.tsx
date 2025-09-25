@@ -10,16 +10,23 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { FeedStackParamList } from '@app/types/navigation';
 
 interface FeedItemProps {
   post: Post;
 }
 
 function FeedItem({ post }: FeedItemProps) {
+  const navigation = useNavigation<StackNavigationProp<FeedStackParamList>>();
   const { width } = useWindowDimensions();
   const imageSize = width / 2 - 25;
   return (
-    <Pressable className="flex-1 m-[5px] my-3">
+    <Pressable
+      className="flex-1 m-[5px] my-3"
+      onPress={() => navigation.navigate('FeedDetail', { id: post.id })}
+    >
       {post.imageUris.length > 0 && (
         <View style={{ width: imageSize, height: imageSize }}>
           <Image

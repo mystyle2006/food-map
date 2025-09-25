@@ -29,6 +29,9 @@ export const FeedStack = createStackNavigator({
     },
     FeedDetail: {
       screen: FeedDetailScreen,
+      options: {
+        headerShown: false,
+      },
     },
     FeedFavorite: {
       screen: FeedFavoriteScreen,

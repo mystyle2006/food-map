@@ -15,6 +15,9 @@ import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
 import { getDateWithSeparator } from '@app/utils/dates';
 import { Avatar, AvatarImage } from '@app/components/ui/avatar';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainDrawerParamList } from '@app/types/navigation';
 
 interface MarkerModalProps {
   markerId: number;
@@ -29,15 +32,31 @@ export const MarkerBottomModal = ({
 }: MarkerModalProps) => {
   const { data: post, isPending, isError } = useGetPost(markerId);
   const { width } = useWindowDimensions();
+  const navigation = useNavigation<StackNavigationProp<MainDrawerParamList>>();
 
   if (isPending || isError) {
     return <></>;
   }
 
+  const handlePressModal = () => {
+    navigation.navigate('Feed', {
+      screen: 'FeedDetail',
+      params: {
+        id: post.id,
+      },
+      initial: false,
+    });
+
+    onClose();
+  };
+
   return (
     <Modal visible={isOpen} transparent animationType="slide">
       <SafeAreaView className="flex-1 justify-end" onTouchEnd={onClose}>
-        <Pressable className="bg-white m-2.5 border border-[#8E8E8E] rounded-2xl shadow-sm">
+        <Pressable
+          className="bg-white m-2.5 border border-[#8E8E8E] rounded-2xl shadow-sm"
+          onPress={handlePressModal}
+        >
           <View className="p-5 w-full flex-row items-center justify-between">
             <View className="flex-row items-center justify-center">
               {post.imageUris.length > 0 && (

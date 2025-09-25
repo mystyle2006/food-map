@@ -21,6 +21,7 @@ import { useLocationStore } from '@app/store/location';
 import { useNavigation } from '@react-navigation/native';
 import { useModal } from '@app/hooks/useModal';
 import FeedDetailActionSheet from '@app/components/feed/FeedDetailActionSheet';
+import useMutateFavoritePost from '@app/hooks/useMutateFavoritePost';
 
 type Props = StackScreenProps<FeedStackParamList, 'FeedDetail'>;
 type NavigationType = StackNavigationProp<MainDrawerParamList>;
@@ -31,6 +32,7 @@ function FeedDetailScreen({ route }: Props) {
   const { setMoveLocation } = useLocationStore();
   const navigation = useNavigation<NavigationType>();
   const detailAction = useModal();
+  const favoriteMutation = useMutateFavoritePost();
 
   const insets = useSafeAreaInsets();
   const { data: post, isPending, isError } = useGetPost(id);
@@ -148,8 +150,12 @@ function FeedDetailScreen({ route }: Props) {
       </ScrollView>
 
       <View className="absolute bottom-0 w-full items-center flex-row justify-end py-[10px] px-5 bg-white border-t border-gray-200 gap-[5px]">
-        <Button size="sm">
-          <Ionicons name="star" size={18} color={colors.WHITE} />
+        <Button size="sm" onPress={() => favoriteMutation.mutate(post.id)}>
+          <Ionicons
+            name="star"
+            size={18}
+            color={post.isFavorite ? colors.RED_500 : colors.WHITE}
+          />
         </Button>
         <Button size="sm" onPress={handlePressLocation}>
           <ButtonText>Go to Location</ButtonText>

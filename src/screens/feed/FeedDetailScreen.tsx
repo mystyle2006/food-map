@@ -14,7 +14,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { colors } from '@app/constants/colors';
 import { baseUrls } from '@app/api/axios';
 import { getDateWithSeparator } from '@app/utils/dates';
-import PreviewImageList from '@app/components/PreviewImageList';
+import PreviewImageList from '@app/components/feed/PreviewImageList';
 import { Button, ButtonText } from '@app/components/ui/button';
 import React from 'react';
 import { useLocationStore } from '@app/store/location';

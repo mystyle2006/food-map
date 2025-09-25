@@ -5,6 +5,7 @@ import FeedFavoriteScreen from '@app/screens/feed/FeedFavoriteScreen';
 import EditLocationScreen from '@app/screens/feed/EditLocationScreen';
 import { colors } from '@app/constants/colors';
 import DrawerButton from '@app/components/DrawerButton';
+import ImageZoomScreen from '@app/screens/feed/ImageZoomScreen';
 
 export const FeedStack = createStackNavigator({
   screenOptions: {
@@ -43,6 +44,12 @@ export const FeedStack = createStackNavigator({
         cardStyle: {
           backgroundColor: colors.WHITE,
         },
+      },
+    },
+    ImageZoom: {
+      screen: ImageZoomScreen,
+      options: {
+        headerShown: false,
       },
     },
   },

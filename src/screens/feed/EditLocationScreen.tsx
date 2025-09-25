@@ -31,7 +31,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ImageInput } from '@app/components/ImageInput';
 import usePermission from '@app/hooks/usePermission';
 import useImagePicker from '@app/hooks/useImagePicker';
-import PreviewImageList from '@app/components/PreviewImageList';
+import PreviewImageList from '@app/components/feed/PreviewImageList';
 import { useNavigation } from '@react-navigation/native';
 import useGetPost from '@app/hooks/useGetPost';
 import useMutateUpdatePost from '@app/hooks/useMutateUpdatePost';

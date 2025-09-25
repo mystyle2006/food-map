@@ -10,17 +10,47 @@ import {
   ActionsheetItemText,
 } from '@app/components/ui/actionsheet';
 import { EditIcon, TrashIcon } from '@app/components/ui/icon';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { useMutateDeletePost } from '@app/hooks/useMutateDeletePost';
+import { Alert } from 'react-native';
 
 interface FeedDetailActionSheetProps {
+  id: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
 function FeedDetailActionSheet({
+  id,
   isOpen,
   onClose,
 }: FeedDetailActionSheetProps) {
+  const navigation = useNavigation();
+  const deletePost = useMutateDeletePost();
+  const handleDeletePost = () => {
+    Alert.alert(
+      'Do you want to delete?',
+      'The post will be deleted from feed and map.',
+      [
+        {
+          text: 'Delete',
+          onPress: () =>
+            deletePost.mutate(id, {
+              onSuccess: () => {
+                onClose();
+                navigation.goBack();
+              },
+            }),
+          style: 'destructive',
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+    );
+  };
+
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <ActionsheetBackdrop />
@@ -28,9 +58,11 @@ function FeedDetailActionSheet({
         <ActionsheetDragIndicatorWrapper>
           <ActionsheetDragIndicator />
         </ActionsheetDragIndicatorWrapper>
-        <ActionsheetItem onPress={onClose}>
-          <ActionsheetIcon className="stroke-background-700" as={TrashIcon} />
-          <ActionsheetItemText>Delete</ActionsheetItemText>
+        <ActionsheetItem onPress={handleDeletePost}>
+          <ActionsheetIcon className="stroke-red-700" as={TrashIcon} />
+          <ActionsheetItemText className="text-red-700">
+            Delete
+          </ActionsheetItemText>
         </ActionsheetItem>
         <ActionsheetItem onPress={onClose}>
           <ActionsheetIcon className="stroke-background-700" as={EditIcon} />

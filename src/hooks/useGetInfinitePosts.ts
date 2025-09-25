@@ -19,7 +19,9 @@ function useGetInfinitePosts(
   >,
 ) {
   return useInfiniteQuery({
-    queryFn: ({ pageParam }) => getPosts(pageParam),
+    queryFn: ({ pageParam }) => {
+      return getPosts(pageParam);
+    },
     queryKey: [queryKeys.POST, queryKeys.GET_POSTS],
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {

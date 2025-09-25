@@ -157,6 +157,7 @@ function FeedDetailScreen({ route }: Props) {
       </View>
 
       <FeedDetailActionSheet
+        id={post.id}
         isOpen={detailAction.isVisible}
         onClose={detailAction.hide}
       />

@@ -25,10 +25,9 @@ function FeedList() {
     setIsRefreshing(false);
   };
 
-  console.log(posts);
   return (
     <FlatList
-      data={posts?.pages.flat()}
+      data={posts?.pages?.flat() || []}
       renderItem={({ item }) => <FeedItem post={item} />}
       keyExtractor={(item) => String(item.id)}
       numColumns={2}

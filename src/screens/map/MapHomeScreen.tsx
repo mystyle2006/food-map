@@ -125,6 +125,10 @@ function MapHomeScreen() {
         {selectLocation && <Marker coordinate={selectLocation} />}
       </MapView>
       <View className="absolute bottom-[30px] right-[20px] z-10">
+        <MapIconButton
+          name="magnifying-glass"
+          onPress={() => navigation.navigate('SearchLocation')}
+        />
         <MapIconButton onPress={handlePressAddPost} name="plus" />
         <MapIconButton
           onPress={handlePressUserLocation}

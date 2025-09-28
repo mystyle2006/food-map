@@ -35,6 +35,13 @@ export const MapStack = createStackNavigator({
     },
     SearchLocation: {
       screen: SearchLocationScreen,
+      options: {
+        title: 'Search',
+        presentation: 'modal',
+        cardStyle: {
+          backgroundColor: colors.WHITE,
+        },
+      },
     },
   },
 });

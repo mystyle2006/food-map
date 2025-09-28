@@ -2,7 +2,7 @@ import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { MainDrawerParamList } from '@app/types/navigation';
 import { colors } from '@app/constants/colors';
 
-type DrawerIconName = 'map' | 'book' | 'calendar';
+type DrawerIconName = 'map' | 'book' | 'calendar' | 'setting';
 
 export const DrawerIcons = (
   routeName: keyof MainDrawerParamList,
@@ -20,6 +20,10 @@ export const DrawerIcons = (
       break;
     }
     case 'Calendar': {
+      iconName = 'calendar';
+      break;
+    }
+    case 'Setting': {
       iconName = 'calendar';
       break;
     }

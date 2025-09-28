@@ -10,14 +10,17 @@ import { Input, InputField } from '@app/components/ui/input';
 import { Button, ButtonText } from '@app/components/ui/button';
 import { VStack } from '@app/components/ui/vstack';
 import useForm from '@app/hooks/useForm';
-import { validateSignup } from '@app/validations/signup.valiation.ts';
+import { validateSignup } from '@app/validations/signup.valiation';
 import { useRef } from 'react';
 import { useAuth } from '@app/hooks/useAuth';
+import { Toast, ToastDescription, useToast } from '@app/components/ui/toast';
+import { errorMessages } from '@app/constants/messages';
 
 function SignupScreen() {
   const { signupMutation, loginMutation } = useAuth();
   const passwordRef = useRef<TextInputProps & TextInput>(null);
   const passwordConfirmRef = useRef<TextInputProps & TextInput>(null);
+  const toast = useToast();
 
   const signupForm = useForm({
     initialValue: { email: '', password: '', passwordConfirm: '' },
@@ -31,7 +34,30 @@ function SignupScreen() {
       { email, password },
       {
         onSuccess: () => loginMutation.mutate({ email, password }),
-        onError: console.log,
+        onError: (error) => {
+          toast.show({
+            placement: 'bottom',
+            duration: 3000,
+            containerStyle: {
+              marginBottom: 30,
+            },
+            render: ({ id }) => {
+              const uniqueToastId = 'toast-' + id;
+              return (
+                <Toast
+                  nativeID={uniqueToastId}
+                  action="error"
+                  variant="outline"
+                >
+                  <ToastDescription>
+                    {error.response?.data.message ||
+                      errorMessages.UNEXPECT_ERROR}
+                  </ToastDescription>
+                </Toast>
+              );
+            },
+          });
+        },
       },
     );
   };

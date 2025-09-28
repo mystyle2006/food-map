@@ -26,6 +26,7 @@ import { queryKeys, storageKeys } from '@app/constants/keys';
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postSignup,
+    throwOnError: (error) => Number(error.response?.status) >= 500,
     ...mutationOptions,
   });
 }
@@ -33,6 +34,7 @@ function useSignup(mutationOptions?: UseMutationCustomOptions) {
 function useLogin(mutationOptions?: UseMutationCustomOptions<AuthType>) {
   return useMutation({
     mutationFn: postLogin,
+    throwOnError: (error) => Number(error.response?.status) >= 500,
     onSuccess: async ({ accessToken, refreshToken }) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
       await setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);

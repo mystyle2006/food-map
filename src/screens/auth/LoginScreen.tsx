@@ -13,9 +13,12 @@ import useForm from '@app/hooks/useForm';
 import { validateLogin } from '@app/validations/signin.valiation';
 import { useRef } from 'react';
 import { useAuth } from '@app/hooks/useAuth';
+import { Toast, ToastDescription, useToast } from '@app/components/ui/toast';
+import { errorMessages } from '@app/constants/messages';
 
 function LoginScreen() {
   const { loginMutation } = useAuth();
+  const toast = useToast();
   const passwordRef = useRef<TextInputProps & TextInput>(null);
 
   const loginForm = useForm({
@@ -24,7 +27,27 @@ function LoginScreen() {
   });
 
   const handleSubmit = () => {
-    loginMutation.mutate(loginForm.values);
+    loginMutation.mutate(loginForm.values, {
+      onError: (error) => {
+        toast.show({
+          placement: 'bottom',
+          duration: 3000,
+          containerStyle: {
+            marginBottom: 30,
+          },
+          render: ({ id }) => {
+            const uniqueToastId = 'toast-' + id;
+            return (
+              <Toast nativeID={uniqueToastId} action="error" variant="outline">
+                <ToastDescription>
+                  {error.response?.data.message || errorMessages.UNEXPECT_ERROR}
+                </ToastDescription>
+              </Toast>
+            );
+          },
+        });
+      },
+    });
   };
 
   return (

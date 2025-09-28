@@ -25,9 +25,15 @@ export type MainDrawerParamList = {
   Map: NavigatorScreenParams<MapStackParamList>;
   Feed: NavigatorScreenParams<FeedStackParamList>;
   Calendar: undefined;
+  Setting: undefined;
 };
 
 /* INFO: https://reactnavigation.org/docs/typescript */
 declare module '@react-navigation/native' {
   interface RootParamList extends MainDrawerParamList {}
 }
+
+export type SettingStackParamList = {
+  SettingHome: undefined;
+  EditProfile: undefined;
+};

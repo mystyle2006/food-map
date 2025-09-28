@@ -8,6 +8,7 @@ import DrawerButton from '@app/components/DrawerButton';
 import CustomDrawerContent from '@app/components/CustomDrawerContent';
 import { DrawerIcons } from '@app/components/DrawerIcon';
 import { MainDrawerParamList } from '@app/types/navigation';
+import { SettingStack } from '@app/navigations/SettingNavigation';
 
 const DrawerNavigator = createDrawerNavigator({
   screenOptions: ({ route }) => {
@@ -61,6 +62,16 @@ const DrawerNavigator = createDrawerNavigator({
       options: {
         title: 'Calendar',
         headerLeft: () => <DrawerButton />,
+      },
+    },
+    Setting: {
+      screen: SettingStack,
+      options: {
+        title: 'Setting',
+        headerShown: false,
+        drawerItemStyle: {
+          height: 0,
+        },
       },
     },
   },

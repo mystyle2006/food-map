@@ -1,18 +1,12 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import Config from 'react-native-config';
 import { LatLng } from 'react-native-maps';
-
-type Meta = {
-  total_count: number;
-  pageable_count: number;
-  is_end: boolean;
-  same_name: {
-    region: string[];
-    keyword: string;
-    selected_region: string;
-  };
-};
+import {
+  InfiniteData,
+  QueryKey,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
+import { queryKeys } from '@app/constants/keys';
 
 export type RegionInfo = {
   address_name: string;
@@ -29,10 +23,10 @@ export type GooglePlaceType = {
   id: string;
   formattedAddress: string;
   displayName: {
-    text: string;
+    text?: string;
   };
   primaryTypeDisplayName: {
-    text: string;
+    text?: string;
   };
   location: {
     latitude: number;
@@ -43,53 +37,82 @@ export type GooglePlaceType = {
 
 type RegionResponse = {
   places: GooglePlaceType[];
+  nextPageToken: string | null;
+};
+
+const searchPlaces = async (
+  keyword: string,
+  pageToken?: string,
+): Promise<RegionResponse> => {
+  const { data } = await axios.post<RegionResponse>(
+    'https://places.googleapis.com/v1/places:searchText',
+    {
+      textQuery: keyword,
+      languageCode: 'en',
+      ...(pageToken && { pageToken }),
+    },
+    {
+      headers: {
+        'X-Goog-Api-Key': Config.GOOGLE_MAP_API_KEY,
+        'X-Goog-FieldMask': [
+          'places.id',
+          'places.formattedAddress',
+          'places.displayName',
+          'places.primaryTypeDisplayName',
+          'places.location',
+          'places.rating',
+          'nextPageToken',
+        ].join(','),
+      },
+    },
+  );
+
+  return data;
 };
 
 function useSearchLocation(keyword: string, location: LatLng) {
-  const [regionInfo, setRegionInfo] = useState<RegionInfo[]>([]);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery<
+    RegionResponse,
+    Error,
+    InfiniteData<RegionResponse, string | undefined>,
+    QueryKey,
+    string | undefined
+  >({
+    queryKey: [queryKeys.SEARCH_PLACES, keyword, location],
+    queryFn: ({ pageParam }) => searchPlaces(keyword, pageParam),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.nextPageToken ?? undefined,
+    enabled: Boolean(keyword),
+  });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await axios.post<RegionResponse>(
-          'https://places.googleapis.com/v1/places:searchText',
-          {
-            textQuery: keyword,
-            languageCode: 'en',
-          },
-          {
-            headers: {
-              'X-Goog-Api-Key': Config.GOOGLE_MAP_API_KEY,
-              'X-Goog-FieldMask': [
-                'places.id',
-                'places.formattedAddress',
-                'places.displayName',
-                'places.primaryTypeDisplayName',
-                'places.location',
-                'places.rating',
-              ].join(','),
-            },
-          },
-        );
-        setRegionInfo(
-          (data.places || []).map((place: GooglePlaceType) => ({
-            address_name: place.formattedAddress,
-            category_name: place.primaryTypeDisplayName.text,
-            rating: place.rating,
-            id: place.id,
-            place_name: place.displayName.text,
-            road_address_name: place.formattedAddress,
-            x: place.location.longitude.toFixed(4),
-            y: place.location.latitude.toFixed(4),
-          })),
-        );
-      } catch {
-        setRegionInfo([]);
-      }
-    })();
-  }, [keyword, location]);
+  const regionInfo: RegionInfo[] = (data?.pages || []).flatMap((page) =>
+    (page.places || []).map((place: GooglePlaceType) => ({
+      address_name: place.formattedAddress,
+      category_name: place.primaryTypeDisplayName?.text || '',
+      rating: place.rating,
+      id: place.id,
+      place_name: place.displayName?.text || '',
+      road_address_name: place.formattedAddress,
+      x: place.location.longitude.toFixed(4),
+      y: place.location.latitude.toFixed(4),
+    })),
+  );
 
-  return { regionInfo };
+  return {
+    regionInfo,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  };
 }
 
 export default useSearchLocation;

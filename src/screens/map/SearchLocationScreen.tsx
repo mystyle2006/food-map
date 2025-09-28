@@ -9,7 +9,13 @@ function SearchLocationScreen() {
   const [keyword, setKeyword] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const { userLocation } = useUserLocation();
-  const { regionInfo } = useSearchLocation(searchKeyword, userLocation);
+  const {
+    regionInfo,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useSearchLocation(searchKeyword, userLocation);
 
   const handleSubmitKeyword = () => {
     setSearchKeyword(keyword);
@@ -25,7 +31,13 @@ function SearchLocationScreen() {
         onSubmit={handleSubmitKeyword}
         placeholder="Please enter a place to search"
       />
-      <SearchRegionResult regionInfo={regionInfo} />
+      <SearchRegionResult
+        regionInfo={regionInfo}
+        onLoadMore={fetchNextPage}
+        hasNextPage={Boolean(hasNextPage)}
+        isFetchingNextPage={isFetchingNextPage}
+        isLoading={isLoading}
+      />
     </View>
   );
 }

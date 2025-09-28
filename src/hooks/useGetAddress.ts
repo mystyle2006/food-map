@@ -18,8 +18,6 @@ function useGetAddress(location: LatLng) {
           ? data.results[0].formatted_address
           : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
 
-        console.log(data);
-
         setResult(address);
       } catch (error) {
         setResult('Address not found.');

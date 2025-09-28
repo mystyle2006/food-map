@@ -32,7 +32,7 @@ function MapHomeScreen() {
   const inset = useSafeAreaInsets();
   const markerModal = useModal();
   const [markerId, setSetMarkerId] = useState<number>();
-  const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+  const { selectLocation, setSelectLocation } = useLocationStore();
 
   const { userLocation, isUserLocationError } = useUserLocation();
   const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();

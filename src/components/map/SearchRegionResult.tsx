@@ -4,14 +4,36 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 
 import { RegionInfo } from '@app/hooks/useSearchLocation';
 import { colors } from '@app/constants/colors';
+import { useNavigation } from '@react-navigation/native';
+import { useLocationStore } from '@app/store/location';
+import { LatLng } from 'react-native-maps';
 
 interface SearchRegionResultProps {
   regionInfo: RegionInfo[];
 }
 
 function SearchRegionResult({ regionInfo }: SearchRegionResultProps) {
+  const navigation = useNavigation();
+  const { setMoveLocation, setSelectLocation } = useLocationStore();
+
+  const handlePressRegionInfo = (latitude: string, longitude: string) => {
+    const regionLocation = {
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+    };
+
+    moveToMapScreen(regionLocation);
+  };
+
+  const moveToMapScreen = (location: LatLng) => {
+    navigation.goBack();
+
+    setMoveLocation(location);
+    setSelectLocation(location);
+  };
+
   return (
-    <View className="border border-[#E7E7E7] rounded w-full my-[5px] h-[50vh]">
+    <View className="border border-[#E7E7E7] rounded w-full my-[5px] flex-1">
       <ScrollView className="p-[10px]">
         {regionInfo.map((info, index) => {
           return (
@@ -22,6 +44,7 @@ function SearchRegionResult({ regionInfo }: SearchRegionResultProps) {
                   ? 'border-b border-[#D8D8D8]'
                   : ''
               }`}
+              onPress={() => handlePressRegionInfo(info.y, info.x)}
             >
               <View className="flex-row items-center gap-[5px]">
                 <Ionicons name="location" size={10} color={colors.PINK_700} />

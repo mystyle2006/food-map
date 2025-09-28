@@ -1,6 +1,6 @@
 import SearchInput from '@app/components/map/SearchInput';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { useUserLocation } from '@app/hooks/useUserLocation';
 import useSearchLocation from '@app/hooks/useSearchLocation';
 import SearchRegionResult from '@app/components/map/SearchRegionResult';
@@ -12,13 +12,14 @@ function SearchLocationScreen() {
   const { regionInfo } = useSearchLocation(searchKeyword, userLocation);
 
   const handleSubmitKeyword = () => {
-    console.log('>>> test');
     setSearchKeyword(keyword);
+    Keyboard.dismiss();
   };
 
   return (
     <View style={styles.container}>
       <SearchInput
+        autoFocus
         value={keyword}
         onChangeText={setKeyword}
         onSubmit={handleSubmitKeyword}

@@ -15,3 +15,14 @@ export const validateAccount = (values: AccountInformationType) => {
 
   return errors;
 };
+
+export const validateEditProfile = (values: { nickname: string }) => {
+  const errors = {
+    nickname: '',
+  };
+  if (values.nickname.trim() === '') {
+    errors.nickname = 'Please enter your nickname.';
+  }
+
+  return errors;
+};

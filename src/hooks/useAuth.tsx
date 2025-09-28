@@ -1,4 +1,5 @@
 import {
+  editProfile,
   getAccessToken,
   getProfile,
   logout,
@@ -38,6 +39,19 @@ function useLogin(mutationOptions?: UseMutationCustomOptions<AuthType>) {
       queryClient.fetchQuery({
         queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
       });
+    },
+    ...mutationOptions,
+  });
+}
+
+function useUpdateProfile(mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: editProfile,
+    onSuccess: (newProfile) => {
+      queryClient.setQueryData(
+        [queryKeys.AUTH, queryKeys.GET_PROFILE],
+        newProfile,
+      );
     },
     ...mutationOptions,
   });
@@ -100,6 +114,7 @@ export const useAuth = () => {
     enabled: refreshTokenQuery.isSuccess,
   });
   const logoutMutation = useLogout();
+  const profileMutation = useUpdateProfile();
 
   return {
     auth: {
@@ -112,5 +127,6 @@ export const useAuth = () => {
     loginMutation,
     logoutMutation,
     isLogin,
+    profileMutation,
   };
 };

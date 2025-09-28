@@ -9,12 +9,19 @@ import {
   ToastTitle,
   useToast,
 } from '@app/components/ui/toast';
+import { Alert } from 'react-native';
 
 interface UseImagePickerProps {
   initialImages: ImageUri[];
+  mode?: 'multiple' | 'single';
+  onSettled?: () => void;
 }
 
-function useImagePicker({ initialImages }: UseImagePickerProps) {
+function useImagePicker({
+  initialImages,
+  mode = 'multiple',
+  onSettled,
+}: UseImagePickerProps) {
   const toast = useToast();
   const uploadImages = useMutateImages();
   const [imageUris, setImageUris] = useState<ImageUri[]>(initialImages);
@@ -28,17 +35,28 @@ function useImagePicker({ initialImages }: UseImagePickerProps) {
     setImageUris(newImageUris);
   };
 
+  const replaceImageUri = (uris: string[]) => {
+    if (uris.length > 1) {
+      Alert.alert('Exceeded Image Count', 'You can add up to 1 image only.');
+      return;
+    }
+
+    setImageUris([...uris.map((uri) => ({ uri }))]);
+  };
+
   const handleChangeImage = () => {
     ImagePicker.openPicker({
       mediaType: 'photo',
       multiple: true,
       includeBase64: true,
-      maxFiles: 5,
+      maxFiles: mode === 'multiple' ? 5 : 1,
     })
       .then((images) => {
         const formData = getFormDataImages('images', images);
         uploadImages.mutate(formData, {
-          onSuccess: (data) => addImageUris(data),
+          onSuccess: (data) =>
+            mode === 'multiple' ? addImageUris(data) : replaceImageUri(data),
+          onSettled: () => onSettled && onSettled(),
         });
       })
       .catch((error) => {

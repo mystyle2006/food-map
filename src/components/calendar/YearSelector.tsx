@@ -71,7 +71,7 @@ function YearSelector({
             className="flex-1 flex-row bg-white p-[15px] items-center justify-center border-t border-b border-[#8E8E8E]"
             onPress={hide}
           >
-            <Text className="text-black text-base font-semibold">닫기</Text>
+            <Text className="text-black text-base font-semibold">Close</Text>
             <Ionicons name="chevron-up" size={20} color={colors.BLACK} />
           </Pressable>
         </View>

@@ -21,8 +21,6 @@ function SettingHomeScreen() {
           title="Edit Profile"
           onPress={() => navigation.navigate('EditProfile')}
         />
-        <SettingItem title="Dark Mode" />
-        <View style={styles.space} />
         <SettingItem
           title="Sign out"
           color={colors.RED_500}

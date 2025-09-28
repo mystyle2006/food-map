@@ -23,6 +23,8 @@ import useGetMarkers from '@app/hooks/useGetMarkers';
 import { useModal } from '@app/hooks/useModal';
 import { MarkerBottomModal } from '@app/components/MarkerBottomModal';
 import { useLocationStore } from '@app/store/location';
+import MarkerFilterAction from '@app/components/map/MarkerFilterAction';
+import { useFilterStore } from '@app/store/filter';
 
 type Navigation = StackNavigationProp<MapStackParamList>;
 
@@ -30,14 +32,21 @@ function MapHomeScreen() {
   const navigation = useNavigation<Navigation>();
   const toast = useToast();
   const inset = useSafeAreaInsets();
+  const { filters } = useFilterStore();
   const markerModal = useModal();
   const [markerId, setSetMarkerId] = useState<number>();
   const { selectLocation, setSelectLocation } = useLocationStore();
 
   const { userLocation, isUserLocationError } = useUserLocation();
   const { mapRef, moveMapView, handleChangeDelta } = useMoveMapView();
-  const { data: markers = [] } = useGetMarkers();
+  const { data: markers = [] } = useGetMarkers({
+    select: (data) =>
+      data.filter(
+        (marker) => filters[marker.color] && filters[String(marker.score)],
+      ),
+  });
   const { moveLocation } = useLocationStore();
+  const filterAction = useModal();
 
   usePermission('LOCATION');
 
@@ -125,6 +134,7 @@ function MapHomeScreen() {
         {selectLocation && <Marker coordinate={selectLocation} />}
       </MapView>
       <View className="absolute bottom-[30px] right-[20px] z-10">
+        <MapIconButton name="filter" onPress={filterAction.show} />
         <MapIconButton
           name="magnifying-glass"
           onPress={() => navigation.navigate('SearchLocation')}
@@ -140,6 +150,11 @@ function MapHomeScreen() {
         markerId={Number(markerId)}
         isOpen={markerModal.isVisible}
         onClose={markerModal.hide}
+      />
+
+      <MarkerFilterAction
+        isVisible={filterAction.isVisible}
+        hideAction={filterAction.hide}
       />
     </View>
   );

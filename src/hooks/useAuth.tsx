@@ -9,6 +9,7 @@ import {
 import { queryClient } from '@app/api/query-client';
 import { numbers } from '@app/constants/numbers';
 import {
+  ResponseError,
   UseMutationCustomOptions,
   UseQueryCustomOptions,
 } from '@app/types/api/api';
@@ -60,9 +61,10 @@ function useUpdateProfile(mutationOptions?: UseMutationCustomOptions) {
 }
 
 function useGetRefreshToken() {
-  const { data, isSuccess, isError } = useQuery<AuthType>({
+  const { data, isSuccess, isError } = useQuery<AuthType, ResponseError>({
     queryKey: [queryKeys.AUTH, queryKeys.GET_ACCESS_TOKEN],
     queryFn: getAccessToken,
+    throwOnError: (error) => Number(error.response?.status) >= 500,
     staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
     refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
   });

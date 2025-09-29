@@ -1,10 +1,12 @@
 import {
+  appleLogin,
   editProfile,
   getAccessToken,
   getProfile,
   logout,
   postLogin,
   postSignup,
+  ResponseToken,
 } from '@app/api/auth';
 import { queryClient } from '@app/api/query-client';
 import { numbers } from '@app/constants/numbers';
@@ -19,7 +21,7 @@ import {
   setEncryptStorage,
 } from '@app/utils/encrypted-storage';
 import { removeHeader, setHeader } from '@app/utils/header';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { MutationFunction, useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { AuthType } from '@app/types/api/auth';
 import { queryKeys, storageKeys } from '@app/constants/keys';
@@ -32,9 +34,12 @@ function useSignup(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
-function useLogin(mutationOptions?: UseMutationCustomOptions<AuthType>) {
+function useLogin<T>(
+  loginAPI: MutationFunction<ResponseToken, T>,
+  mutationOptions?: UseMutationCustomOptions<AuthType>,
+) {
   return useMutation({
-    mutationFn: postLogin,
+    mutationFn: loginAPI,
     throwOnError: (error) => Number(error.response?.status) >= 500,
     onSuccess: async ({ accessToken, refreshToken }) => {
       setHeader('Authorization', `Bearer ${accessToken}`);
@@ -93,6 +98,7 @@ function useGetRefreshToken() {
 function useGetProfile(queryOptions?: UseQueryCustomOptions<Profile>) {
   return useQuery({
     queryFn: getProfile,
+    throwOnError: (error) => Number(error.response?.status) >= 500,
     queryKey: [queryKeys.AUTH, queryKeys.GET_PROFILE],
     ...queryOptions,
   });
@@ -110,15 +116,24 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
+function useAppleLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useLogin(appleLogin, mutationOptions);
+}
+
+function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
+  return useLogin(postLogin, mutationOptions);
+}
+
 export const useAuth = () => {
   const signupMutation = useSignup();
-  const loginMutation = useLogin();
+  const loginMutation = useEmailLogin();
   const refreshTokenQuery = useGetRefreshToken();
   const { data, isSuccess: isLogin } = useGetProfile({
     enabled: refreshTokenQuery.isSuccess,
   });
   const logoutMutation = useLogout();
   const profileMutation = useUpdateProfile();
+  const appleLoginMutation = useAppleLogin();
 
   return {
     auth: {
@@ -128,6 +143,7 @@ export const useAuth = () => {
       imageUri: data?.imageUri || '',
     },
     signupMutation,
+    appleLoginMutation,
     loginMutation,
     logoutMutation,
     isLogin,

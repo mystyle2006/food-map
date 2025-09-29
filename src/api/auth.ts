@@ -11,7 +11,7 @@ async function postSignup({ email, password }: RequestUser): Promise<void> {
   await axiosInstance.post('/auth/signup', { email, password });
 }
 
-type ResponseToken = {
+export type ResponseToken = {
   accessToken: string;
   refreshToken: string;
 };
@@ -58,6 +58,18 @@ async function editProfile(body: RequestProfile): Promise<Profile> {
   return data;
 }
 
+type RequestAppleIdentity = {
+  identityToken: string;
+  appId: string;
+  nickname: string | null;
+};
+
+async function appleLogin(body: RequestAppleIdentity): Promise<ResponseToken> {
+  const { data } = await axiosInstance.post('/auth/oauth/apple', body);
+
+  return data;
+}
+
 export {
   postSignup,
   postLogin,
@@ -65,4 +77,5 @@ export {
   getAccessToken,
   logout,
   editProfile,
+  appleLogin,
 };

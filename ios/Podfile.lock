@@ -1867,6 +1867,8 @@ PODS:
     - React-logger (= 0.79.4)
     - React-perflogger (= 0.79.4)
     - React-utils (= 0.79.4)
+  - RNAppleAuthentication (2.4.1):
+    - React-Core
   - RNBootSplash (6.3.11):
     - DoubleConversion
     - glog
@@ -2351,6 +2353,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -2525,6 +2528,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCMaskedView:
@@ -2626,6 +2631,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
   ReactCodegen: f891084749d03b8af8a244cefaa492e491b763fd
   ReactCommon: c7d636ec1b9801ff4ee83cce8e0bf74a1610fc3f
+  RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNBootSplash: 102a6b3c6f2264eeaf17f14aeeb9644022c24eaf
   RNCMaskedView: ae521efb1c6c2b183ae0f8479487db03c826184c
   RNGestureHandler: 0397fea67f39d5a2d17fcf4a028e206f7ba098ba

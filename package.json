@@ -13,6 +13,7 @@
     "@expo/html-elements": "^0.12.5",
     "@gluestack-ui/core": "^3.0.10",
     "@gluestack-ui/utils": "^3.0.7",
+    "@invertase/react-native-apple-authentication": "^2.4.1",
     "@legendapp/motion": "^2.4.0",
     "@react-native-community/geolocation": "^3.4.0",
     "@react-native-masked-view/masked-view": "^0.3.2",

@@ -43,6 +43,8 @@
 	<string>Library access permission is required to select photos when creating posts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Library access permission is required to select photos when creating posts.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app does not access Apple Music.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -1,10 +1,8 @@
-import { baseUrls } from '@app/api/axios';
 import { Post } from '@app/types/domains';
 import { getDateWithSeparator } from '@app/utils/dates';
 import React from 'react';
 import {
   Image,
-  Platform,
   Pressable,
   Text,
   useWindowDimensions,
@@ -13,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FeedStackParamList } from '@app/types/navigation';
+import Config from 'react-native-config';
 
 interface FeedItemProps {
   post: Post;
@@ -32,7 +31,7 @@ function FeedItem({ post }: FeedItemProps) {
           <Image
             className="w-full h-full rounded"
             source={{
-              uri: `https://qgilqdejucuouehqrfoi.supabase.co/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
+              uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
             }}
             resizeMode="cover"
           />

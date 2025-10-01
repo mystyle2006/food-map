@@ -1,6 +1,5 @@
 import {
   Image,
-  Platform,
   ScrollView,
   Text,
   View,
@@ -12,7 +11,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useGetPost from '@app/hooks/useGetPost';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { colors } from '@app/constants/colors';
-import { baseUrls } from '@app/api/axios';
 import { getDateWithSeparator } from '@app/utils/dates';
 import PreviewImageList from '@app/components/feed/PreviewImageList';
 import { Button, ButtonText } from '@app/components/ui/button';
@@ -22,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useModal } from '@app/hooks/useModal';
 import FeedDetailActionSheet from '@app/components/feed/FeedDetailActionSheet';
 import useMutateFavoritePost from '@app/hooks/useMutateFavoritePost';
+import Config from 'react-native-config';
 
 type Props = StackScreenProps<FeedStackParamList, 'FeedDetail'>;
 type NavigationType = StackNavigationProp<MainDrawerParamList>;
@@ -87,7 +86,7 @@ function FeedDetailScreen({ route }: Props) {
             <Image
               className="w-full h-full"
               source={{
-                uri: `https://qgilqdejucuouehqrfoi.supabase.co/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
+                uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
               }}
               resizeMode="cover"
             />

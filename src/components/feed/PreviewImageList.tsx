@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image, Platform, Pressable, ScrollView } from 'react-native';
+import { Image, Pressable, ScrollView } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
-import { baseUrls } from '@app/api/axios';
 import { ImageUri } from '@app/types/domains';
 import { colors } from '@app/constants/colors';
 import {
@@ -11,6 +10,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { FeedStackParamList } from '@app/types/navigation';
+import Config from 'react-native-config';
 
 interface PreviewImageListProps {
   imageUris: ImageUri[];
@@ -46,7 +46,7 @@ function PreviewImageList({
             <Image
               className="w-full h-full"
               source={{
-                uri: `https://qgilqdejucuouehqrfoi.supabase.co/storage/v1/object/public/food-map-upload/${uri}`,
+                uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${uri}`,
               }}
               resizeMode="cover"
             />

@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
+import Config from 'react-native-config';
 
 export const baseUrls = {
-  android: 'https://food-map-server.onrender.com',
-  ios: 'https://food-map-server.onrender.com',
-  // android: 'http://192.168.2.14:3030',
-  // ios: 'http://192.168.2.14:3030',
+  android: Config.ANDROID_API_ENDPOINT,
+  ios: Config.IOS_API_ENDPOINT,
 };
 
 const axiosInstance = axios.create({

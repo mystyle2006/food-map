@@ -4,6 +4,8 @@ import { Platform } from 'react-native';
 export const baseUrls = {
   android: 'https://food-map-server.onrender.com',
   ios: 'https://food-map-server.onrender.com',
+  // android: 'http://192.168.2.14:3030',
+  // ios: 'http://192.168.2.14:3030',
 };
 
 const axiosInstance = axios.create({

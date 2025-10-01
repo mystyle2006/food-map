@@ -87,7 +87,7 @@ function FeedDetailScreen({ route }: Props) {
             <Image
               className="w-full h-full"
               source={{
-                uri: `${Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android}/${post.imageUris[0].uri}`,
+                uri: `https://qgilqdejucuouehqrfoi.supabase.co/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
               }}
               resizeMode="cover"
             />

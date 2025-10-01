@@ -36,6 +36,7 @@ function PreviewImageList({
   return (
     <ScrollView horizontal contentContainerClassName="gap-[15px] px-[15px]">
       {imageUris.map(({ uri }, index) => {
+        console.log(uri);
         return (
           <Pressable
             key={uri}
@@ -45,9 +46,7 @@ function PreviewImageList({
             <Image
               className="w-full h-full"
               source={{
-                uri: `${
-                  Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                }/${uri}`,
+                uri: `https://qgilqdejucuouehqrfoi.supabase.co/storage/v1/object/public/food-map-upload/${uri}`,
               }}
               resizeMode="cover"
             />

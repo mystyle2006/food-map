@@ -16,6 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
 import FastImage from 'react-native-fast-image';
+import Config from 'react-native-config';
 
 interface ImageCarouselProps {
   images: ImageUri[];
@@ -51,12 +52,10 @@ function ImageCarousel({ images, pressedIndex = 0 }: ImageCarouselProps) {
         renderItem={({ item }) => (
           <View style={{ width: deviceWidth }}>
             <FastImage
-              className="w-full h-full"
               source={{
-                uri: `${
-                  Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                }/${item.uri}`,
+                uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${item.uri}`,
               }}
+              style={{ width: '100%', height: '100%' }}
               resizeMode={FastImage.resizeMode.cover}
             />
           </View>

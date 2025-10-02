@@ -1,7 +1,6 @@
 import React from 'react';
-import { Keyboard, Platform, Pressable, View } from 'react-native';
+import { Keyboard, Pressable, View } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
-import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
 import FixedBottomCTA from '@app/components/FixedBottomCTA';
 import { validateEditProfile } from '@app/validations/account.validation';
@@ -20,6 +19,7 @@ import {
 } from '@app/components/ui/form-control';
 import { Input, InputField } from '@app/components/ui/input';
 import FastImage from 'react-native-fast-image';
+import Config from 'react-native-config';
 
 function EditProfileScreen() {
   const { auth, profileMutation } = useAuth();
@@ -84,11 +84,9 @@ function EditProfileScreen() {
             ) : (
               <FastImage
                 source={{
-                  uri: `${
-                    Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                  }/${imagePicker.imageUris[0]?.uri}`,
+                  uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${imagePicker.imageUris[0]?.uri}`,
                 }}
-                className="w-full h-full rounded-full"
+                style={{ width: '100%', height: '100%', borderRadius: 35 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
             )}

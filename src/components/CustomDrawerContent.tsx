@@ -20,6 +20,7 @@ import { useAuth } from '@app/hooks/useAuth';
 import { baseUrls } from '@app/api/axios';
 import { colors } from '../constants/colors';
 import FastImage from 'react-native-fast-image';
+import Config from 'react-native-config';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const { auth } = useAuth();
@@ -33,18 +34,20 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       >
         <Pressable className="items-center mb-[30px] gap-[5px]">
           <View className="w-[70px] h-[70px] rounded-[35px]">
-            <FastImage
-              source={
-                auth.imageUri
-                  ? {
-                      uri: `${
-                        Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
-                      }/${auth.imageUri}`,
-                    }
-                  : require('@app/assets/default-user.png')
-              }
-              className="w-full h-full rounded-[35px]"
-            />
+            {auth.imageUri ? (
+              <FastImage
+                source={{
+                  uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${auth.imageUri}`,
+                }}
+                style={{ width: '100%', height: '100%', borderRadius: 35 }}
+              />
+            ) : (
+              <Image
+                source={require('@app/assets/default-user.png')}
+                resizeMode={'cover'}
+                className="w-full h-full rounded-[35px]"
+              />
+            )}
           </View>
           <Text className="text-[14px]">{auth.nickname}</Text>
         </Pressable>

@@ -16,6 +16,10 @@ function FeedItem({ post }: FeedItemProps) {
   const navigation = useNavigation<StackNavigationProp<FeedStackParamList>>();
   const { width } = useWindowDimensions();
   const imageSize = width / 2 - 25;
+
+  console.log(
+    `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
+  );
   return (
     <Pressable
       className="flex-1 m-[5px] my-3"
@@ -24,10 +28,10 @@ function FeedItem({ post }: FeedItemProps) {
       {post.imageUris.length > 0 && (
         <View style={{ width: imageSize, height: imageSize }}>
           <FastImage
-            className="w-full h-full rounded"
             source={{
               uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
             }}
+            style={{ width: '100%', height: '100%', borderRadius: 5 }}
             resizeMode={FastImage.resizeMode.cover}
           />
         </View>

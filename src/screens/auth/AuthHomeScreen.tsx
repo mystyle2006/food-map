@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Platform, SafeAreaView, View } from 'react-native';
+import { Image, Platform, SafeAreaView, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '@app/types/navigation';
 import React from 'react';
@@ -60,7 +60,7 @@ export const AuthHomeScreen = () => {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-1 items-center justify-center">
-        <FastImage
+        <Image
           source={require('@app/assets/logo.png')}
           className="w-[160px]"
           resizeMode={FastImage.resizeMode.contain}

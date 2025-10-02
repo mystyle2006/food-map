@@ -79,10 +79,10 @@ function FeedDetailScreen({ route }: Props) {
         <View style={{ width, height: width }}>
           {post.imageUris.length > 0 && (
             <FastImage
-              className="w-full h-full"
               source={{
                 uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
               }}
+              style={{ width: '100%', height: '100%' }}
               resizeMode={FastImage.resizeMode.cover}
             />
           )}

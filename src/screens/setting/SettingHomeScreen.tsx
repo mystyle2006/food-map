@@ -11,7 +11,8 @@ type Navigation = NavigationProp<SettingStackParamList>;
 
 function SettingHomeScreen() {
   const navigation = useNavigation<Navigation>();
-  const { logoutMutation } = useAuth();
+
+  const { unregisterMutation, logoutMutation } = useAuth();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,6 +26,14 @@ function SettingHomeScreen() {
           title="Sign out"
           color={colors.RED_500}
           onPress={() => logoutMutation.mutate(null)}
+        />
+        <View style={styles.space} />
+        <SettingItem
+          title="Delete Account"
+          color={colors.RED_500}
+          onPress={() => {
+            unregisterMutation.mutate(null);
+          }}
         />
       </ScrollView>
     </SafeAreaView>

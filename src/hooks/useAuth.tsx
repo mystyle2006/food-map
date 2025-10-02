@@ -7,6 +7,7 @@ import {
   postLogin,
   postSignup,
   ResponseToken,
+  unregister,
 } from '@app/api/auth';
 import { queryClient } from '@app/api/query-client';
 import { numbers } from '@app/constants/numbers';
@@ -116,6 +117,18 @@ function useLogout(mutationOptions?: UseMutationCustomOptions) {
   });
 }
 
+function useUnregister(mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: unregister,
+    onSuccess: async () => {
+      removeHeader('Authorization');
+      await removeEncryptStorage(storageKeys.REFRESH_TOKEN);
+      queryClient.resetQueries({ queryKey: [queryKeys.AUTH] });
+    },
+    ...mutationOptions,
+  });
+}
+
 function useAppleLogin(mutationOptions?: UseMutationCustomOptions) {
   return useLogin(appleLogin, mutationOptions);
 }
@@ -134,6 +147,7 @@ export const useAuth = () => {
   const logoutMutation = useLogout();
   const profileMutation = useUpdateProfile();
   const appleLoginMutation = useAppleLogin();
+  const unregisterMutation = useUnregister();
 
   return {
     auth: {
@@ -148,5 +162,6 @@ export const useAuth = () => {
     logoutMutation,
     isLogin,
     profileMutation,
+    unregisterMutation,
   };
 };

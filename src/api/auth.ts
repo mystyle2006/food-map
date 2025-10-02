@@ -70,6 +70,11 @@ async function appleLogin(body: RequestAppleIdentity): Promise<ResponseToken> {
   return data;
 }
 
+async function unregister(): Promise<ResponseToken> {
+  const { data } = await axiosInstance.delete('/auth/me');
+  return data;
+}
+
 export {
   postSignup,
   postLogin,
@@ -78,4 +83,5 @@ export {
   logout,
   editProfile,
   appleLogin,
+  unregister,
 };

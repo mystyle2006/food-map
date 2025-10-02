@@ -45,10 +45,10 @@ function PreviewImageList({
             className="w-[70px] h-[70px]"
           >
             <FastImage
-              className="w-full h-full"
               source={{
                 uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${uri}`,
               }}
+              style={{ width: '100%', height: '100%' }}
               resizeMode={FastImage.resizeMode.cover}
             />
             {deletable && (

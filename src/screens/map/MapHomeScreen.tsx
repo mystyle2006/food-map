@@ -1,4 +1,5 @@
-import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView from 'react-native-map-clustering';
 import { Alert, StyleSheet, View } from 'react-native';
 import DrawerButton from '@app/components/DrawerButton';
 import { colors } from '@app/constants/colors';

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, Platform, SafeAreaView, View } from 'react-native';
+import { Platform, SafeAreaView, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '@app/types/navigation';
 import React from 'react';
@@ -10,6 +10,7 @@ import appleAuth, {
 import { useAuth } from '@app/hooks/useAuth';
 import { Toast, ToastDescription, useToast } from '@app/components/ui/toast';
 import { errorMessages } from '@app/constants/messages';
+import FastImage from 'react-native-fast-image';
 
 type NavigationType = StackNavigationProp<AuthStackParamList>;
 
@@ -59,10 +60,10 @@ export const AuthHomeScreen = () => {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-1 items-center justify-center">
-        <Image
+        <FastImage
           source={require('@app/assets/logo.png')}
           className="w-[160px]"
-          resizeMode="contain"
+          resizeMode={FastImage.resizeMode.contain}
         />
       </View>
       <View className="flex-1 gap-3 px-4 justify-center">

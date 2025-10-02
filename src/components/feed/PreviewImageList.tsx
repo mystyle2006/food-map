@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, ScrollView } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { ImageUri } from '@app/types/domains';
 import { colors } from '@app/constants/colors';
@@ -11,6 +11,7 @@ import {
 } from '@react-navigation/native';
 import { FeedStackParamList } from '@app/types/navigation';
 import Config from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 
 interface PreviewImageListProps {
   imageUris: ImageUri[];
@@ -43,12 +44,12 @@ function PreviewImageList({
             onPress={() => handlePressImage(index)}
             className="w-[70px] h-[70px]"
           >
-            <Image
+            <FastImage
               className="w-full h-full"
               source={{
                 uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${uri}`,
               }}
-              resizeMode="cover"
+              resizeMode={FastImage.resizeMode.cover}
             />
             {deletable && (
               <Pressable

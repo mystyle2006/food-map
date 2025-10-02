@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Keyboard, Platform, Pressable, View } from 'react-native';
+import { Keyboard, Platform, Pressable, View } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { baseUrls } from '@app/api/axios';
 import { colors } from '@app/constants/colors';
@@ -19,6 +19,7 @@ import {
   FormControlLabelText,
 } from '@app/components/ui/form-control';
 import { Input, InputField } from '@app/components/ui/input';
+import FastImage from 'react-native-fast-image';
 
 function EditProfileScreen() {
   const { auth, profileMutation } = useAuth();
@@ -81,14 +82,14 @@ function EditProfileScreen() {
                 color={colors.GRAY_500}
               />
             ) : (
-              <Image
+              <FastImage
                 source={{
                   uri: `${
                     Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
                   }/${imagePicker.imageUris[0]?.uri}`,
                 }}
                 className="w-full h-full rounded-full"
-                resizeMode="cover"
+                resizeMode={FastImage.resizeMode.cover}
               />
             )}
           </Pressable>

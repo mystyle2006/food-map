@@ -1,10 +1,4 @@
-import {
-  Image,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { FeedStackParamList, MainDrawerParamList } from '@app/types/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,6 +15,7 @@ import { useModal } from '@app/hooks/useModal';
 import FeedDetailActionSheet from '@app/components/feed/FeedDetailActionSheet';
 import useMutateFavoritePost from '@app/hooks/useMutateFavoritePost';
 import Config from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 
 type Props = StackScreenProps<FeedStackParamList, 'FeedDetail'>;
 type NavigationType = StackNavigationProp<MainDrawerParamList>;
@@ -83,12 +78,12 @@ function FeedDetailScreen({ route }: Props) {
       >
         <View style={{ width, height: width }}>
           {post.imageUris.length > 0 && (
-            <Image
+            <FastImage
               className="w-full h-full"
               source={{
                 uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
               }}
-              resizeMode="cover"
+              resizeMode={FastImage.resizeMode.cover}
             />
           )}
           {post.imageUris.length === 0 && (

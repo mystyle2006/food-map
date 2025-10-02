@@ -19,6 +19,7 @@ import { MainDrawerParamList } from '@app/types/navigation';
 import { useAuth } from '@app/hooks/useAuth';
 import { baseUrls } from '@app/api/axios';
 import { colors } from '../constants/colors';
+import FastImage from 'react-native-fast-image';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const { auth } = useAuth();
@@ -32,7 +33,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       >
         <Pressable className="items-center mb-[30px] gap-[5px]">
           <View className="w-[70px] h-[70px] rounded-[35px]">
-            <Image
+            <FastImage
               source={
                 auth.imageUri
                   ? {

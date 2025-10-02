@@ -1,17 +1,12 @@
 import { Post } from '@app/types/domains';
 import { getDateWithSeparator } from '@app/utils/dates';
 import React from 'react';
-import {
-  Image,
-  Pressable,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import { Pressable, Text, useWindowDimensions, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FeedStackParamList } from '@app/types/navigation';
 import Config from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 
 interface FeedItemProps {
   post: Post;
@@ -28,12 +23,12 @@ function FeedItem({ post }: FeedItemProps) {
     >
       {post.imageUris.length > 0 && (
         <View style={{ width: imageSize, height: imageSize }}>
-          <Image
+          <FastImage
             className="w-full h-full rounded"
             source={{
               uri: `${Config.STORAGE_ENDPOINT}/storage/v1/object/public/food-map-upload/${post.imageUris[0].uri}`,
             }}
-            resizeMode="cover"
+            resizeMode={FastImage.resizeMode.cover}
           />
         </View>
       )}
